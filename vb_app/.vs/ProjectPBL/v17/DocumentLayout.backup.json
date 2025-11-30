@@ -1,0 +1,173 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|c:\\users\\lunox\\source\\repos\\projectpbl\\projectpbl\\dashboarduser.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|solutionrelative:projectpbl\\dashboarduser.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|c:\\users\\lunox\\source\\repos\\projectpbl\\projectpbl\\registerform.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|solutionrelative:projectpbl\\registerform.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|c:\\users\\lunox\\source\\repos\\projectpbl\\projectpbl\\dashboardadmin.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|solutionrelative:projectpbl\\dashboardadmin.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|c:\\users\\lunox\\source\\repos\\projectpbl\\projectpbl\\landingpage.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|solutionrelative:projectpbl\\landingpage.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|c:\\users\\lunox\\source\\repos\\projectpbl\\projectpbl\\tesminatbakat.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|solutionrelative:projectpbl\\tesminatbakat.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|c:\\users\\lunox\\source\\repos\\projectpbl\\projectpbl\\generatetopikskripsi.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|solutionrelative:projectpbl\\generatetopikskripsi.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|c:\\users\\lunox\\source\\repos\\projectpbl\\projectpbl\\hasiltesminatbakat.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|solutionrelative:projectpbl\\hasiltesminatbakat.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|c:\\users\\lunox\\source\\repos\\projectpbl\\projectpbl\\changepassword.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|solutionrelative:projectpbl\\changepassword.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|c:\\users\\lunox\\source\\repos\\projectpbl\\projectpbl\\loginform.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{0B23E5E3-4DCB-4FCA-89C2-AE53011041E2}|ProjectPBL\\ProjectPBL.vbproj|solutionrelative:projectpbl\\loginform.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "LoginForm.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\LoginForm.vb",
+              "RelativeDocumentMoniker": "ProjectPBL\\LoginForm.vb",
+              "ToolTip": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\LoginForm.vb [Design]",
+              "RelativeToolTip": "ProjectPBL\\LoginForm.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-11-17T05:39:37.078Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ChangePassword.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\ChangePassword.vb",
+              "RelativeDocumentMoniker": "ProjectPBL\\ChangePassword.vb",
+              "ToolTip": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\ChangePassword.vb [Design]",
+              "RelativeToolTip": "ProjectPBL\\ChangePassword.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-11-17T05:44:44.737Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DashboardUser.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\DashboardUser.vb",
+              "RelativeDocumentMoniker": "ProjectPBL\\DashboardUser.vb",
+              "ToolTip": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\DashboardUser.vb [Design]",
+              "RelativeToolTip": "ProjectPBL\\DashboardUser.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-11-17T05:45:02.704Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RegisterForm.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\RegisterForm.vb",
+              "RelativeDocumentMoniker": "ProjectPBL\\RegisterForm.vb",
+              "ToolTip": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\RegisterForm.vb [Design]",
+              "RelativeToolTip": "ProjectPBL\\RegisterForm.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-11-17T05:38:21.535Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DashboardAdmin.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\DashboardAdmin.vb",
+              "RelativeDocumentMoniker": "ProjectPBL\\DashboardAdmin.vb",
+              "ToolTip": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\DashboardAdmin.vb [Design]",
+              "RelativeToolTip": "ProjectPBL\\DashboardAdmin.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-11-17T05:52:11.81Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LandingPage.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\LandingPage.vb",
+              "RelativeDocumentMoniker": "ProjectPBL\\LandingPage.vb",
+              "ToolTip": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\LandingPage.vb [Design]",
+              "RelativeToolTip": "ProjectPBL\\LandingPage.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-11-17T05:29:55.26Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TesMinatBakat.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\TesMinatBakat.vb",
+              "RelativeDocumentMoniker": "ProjectPBL\\TesMinatBakat.vb",
+              "ToolTip": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\TesMinatBakat.vb [Design]",
+              "RelativeToolTip": "ProjectPBL\\TesMinatBakat.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-11-17T05:59:49.731Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "GenerateTopikSkripsi.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\GenerateTopikSkripsi.vb",
+              "RelativeDocumentMoniker": "ProjectPBL\\GenerateTopikSkripsi.vb",
+              "ToolTip": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\GenerateTopikSkripsi.vb [Design]",
+              "RelativeToolTip": "ProjectPBL\\GenerateTopikSkripsi.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-11-17T06:06:29.469Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "HasilTesMinatBakat.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\HasilTesMinatBakat.vb",
+              "RelativeDocumentMoniker": "ProjectPBL\\HasilTesMinatBakat.vb",
+              "ToolTip": "C:\\Users\\lunox\\source\\repos\\ProjectPBL\\ProjectPBL\\HasilTesMinatBakat.vb [Design]",
+              "RelativeToolTip": "ProjectPBL\\HasilTesMinatBakat.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2025-11-17T06:09:42.781Z",
+              "IsPinned": true,
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
