@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class GenerateTopikSkripsi
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class GenerateTopikSkripsi
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Label1 = New Label()
         Label2 = New Label()
@@ -35,7 +35,7 @@ Partial Class GenerateTopikSkripsi
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 13F)
+        Label1.Font = New Font("Segoe UI", 13.0F)
         Label1.Location = New Point(41, 26)
         Label1.Name = "Label1"
         Label1.Size = New Size(297, 30)
@@ -45,7 +45,7 @@ Partial Class GenerateTopikSkripsi
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 11F)
+        Label2.Font = New Font("Segoe UI", 11.0F)
         Label2.Location = New Point(53, 75)
         Label2.Name = "Label2"
         Label2.Size = New Size(343, 25)
@@ -55,7 +55,7 @@ Partial Class GenerateTopikSkripsi
         ' Label3
         ' 
         Label3.AutoSize = True
-        Label3.Font = New Font("Segoe UI", 10F)
+        Label3.Font = New Font("Segoe UI", 10.0F)
         Label3.Location = New Point(41, 130)
         Label3.Name = "Label3"
         Label3.Size = New Size(258, 23)
@@ -65,7 +65,7 @@ Partial Class GenerateTopikSkripsi
         ' Label4
         ' 
         Label4.AutoSize = True
-        Label4.Font = New Font("Segoe UI", 10F)
+        Label4.Font = New Font("Segoe UI", 10.0F)
         Label4.Location = New Point(53, 175)
         Label4.Name = "Label4"
         Label4.Size = New Size(137, 23)
@@ -75,7 +75,7 @@ Partial Class GenerateTopikSkripsi
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Font = New Font("Segoe UI", 10F)
+        Label5.Font = New Font("Segoe UI", 10.0F)
         Label5.Location = New Point(53, 216)
         Label5.Name = "Label5"
         Label5.Size = New Size(137, 23)
@@ -85,7 +85,7 @@ Partial Class GenerateTopikSkripsi
         ' Label6
         ' 
         Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 10F)
+        Label6.Font = New Font("Segoe UI", 10.0F)
         Label6.Location = New Point(53, 255)
         Label6.Name = "Label6"
         Label6.Size = New Size(137, 23)
@@ -95,7 +95,7 @@ Partial Class GenerateTopikSkripsi
         ' Label7
         ' 
         Label7.AutoSize = True
-        Label7.Font = New Font("Segoe UI", 10F)
+        Label7.Font = New Font("Segoe UI", 10.0F)
         Label7.Location = New Point(53, 295)
         Label7.Name = "Label7"
         Label7.Size = New Size(137, 23)
@@ -105,7 +105,7 @@ Partial Class GenerateTopikSkripsi
         ' Label8
         ' 
         Label8.AutoSize = True
-        Label8.Font = New Font("Segoe UI", 10F)
+        Label8.Font = New Font("Segoe UI", 10.0F)
         Label8.Location = New Point(53, 339)
         Label8.Name = "Label8"
         Label8.Size = New Size(137, 23)
@@ -114,7 +114,7 @@ Partial Class GenerateTopikSkripsi
         ' 
         ' GenerateTopikSkripsi
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
+        AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 450)
         Controls.Add(Label8)
