@@ -8,6 +8,9 @@ Public Class TesMinatBakat
     Private totalPages As Integer = 10 ' 100 pertanyaan / 10 per halaman
     Private questionsPerPage As Integer = 10
 
+    ' Reference ke dashboard untuk kembali
+    Public Property ParentDashboard As DashboardUser
+
     ' Class untuk menyimpan data pertanyaan
     Public Class QuestionData
         Public Property QuestionId As Integer
@@ -45,8 +48,11 @@ Public Class TesMinatBakat
         ' Center form
         Me.StartPosition = FormStartPosition.CenterScreen
 
+        ' Set background color
+        Me.BackColor = Color.FromArgb(236, 240, 241)
+
         ' Set welcome message
-        Label1.Text = $"Tes Minat Bakat, {LoggedFullName}!"
+        Label1.Text = $"📋 Tes Minat Bakat, {LoggedFullName}!"
 
         ' Load questions dari database
         LoadQuestions()
@@ -116,7 +122,11 @@ Public Class TesMinatBakat
             If questions.Count = 0 Then
                 MessageBox.Show("Tidak ada pertanyaan yang tersedia!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Me.Close()
+                Return
             End If
+
+            ' Hitung total pages berdasarkan jumlah pertanyaan
+            totalPages = Math.Ceiling(questions.Count / questionsPerPage)
 
         Catch ex As Exception
             MessageBox.Show($"Error loading questions: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -138,29 +148,40 @@ Public Class TesMinatBakat
         For i As Integer = startIndex To endIndex
             Dim question As QuestionData = questions(i)
 
+            ' Buat panel untuk setiap pertanyaan
+            Dim questionPanel As New Panel() With {
+                .Location = New Point(30, yPosition),
+                .Size = New Size(Me.ClientSize.Width - 70, 45 + (question.Options.Count * 30)),
+                .BackColor = Color.White,
+                .BorderStyle = BorderStyle.FixedSingle,
+                .Tag = "dynamic"
+            }
+            Me.Controls.Add(questionPanel)
+
             ' Buat label untuk pertanyaan
             Dim lblQuestion As New Label() With {
                 .Text = $"{question.QuestionNumber}. {question.QuestionText}",
-                .Location = New Point(30, yPosition),
+                .Location = New Point(10, 10),
                 .AutoSize = False,
-                .Width = 700,
-                .Height = 40,
-                .Font = New Font("Segoe UI", 10, FontStyle.Regular),
-                .Tag = "dynamic"
+                .Width = questionPanel.Width - 20,
+                .Height = 30,
+                .Font = New Font("Segoe UI", 10, FontStyle.Bold),
+                .ForeColor = Color.FromArgb(44, 62, 80)
             }
-            Me.Controls.Add(lblQuestion)
+            questionPanel.Controls.Add(lblQuestion)
 
-            yPosition += 45
+            Dim optionYPosition As Integer = 40
 
             ' Buat radio buttons untuk setiap option
-            Dim groupName As String = $"question_{question.QuestionId}"
             For Each opt As OptionData In question.Options
                 Dim rb As New RadioButton() With {
                     .Text = $"{opt.OptionCode}. {opt.OptionText}",
-                    .Location = New Point(50, yPosition),
+                    .Location = New Point(20, optionYPosition),
                     .AutoSize = False,
-                    .Width = 650,
+                    .Width = questionPanel.Width - 40,
                     .Height = 25,
+                    .Font = New Font("Segoe UI", 9, FontStyle.Regular),
+                    .ForeColor = Color.FromArgb(52, 73, 94),
                     .Tag = New With {
                         .Type = "dynamic",
                         .QuestionId = question.QuestionId,
@@ -178,53 +199,91 @@ Public Class TesMinatBakat
                 End If
 
                 AddHandler rb.CheckedChanged, AddressOf RadioButton_CheckedChanged
-                Me.Controls.Add(rb)
+                questionPanel.Controls.Add(rb)
 
-                yPosition += 30
+                optionYPosition += 30
             Next
 
-            yPosition += 20 ' Spasi antar pertanyaan
+            yPosition += questionPanel.Height + 15
         Next
 
-        ' Update button text
+        ' Update button text dan visibility
+        If currentPage = 1 Then
+            Button2.Visible = False
+        Else
+            Button2.Visible = True
+            Button2.Text = "« Halaman Sebelumnya"
+        End If
+
         If currentPage = totalPages Then
-            Button3.Text = "Selesai & Hitung"
+            Button3.Text = "✓ Selesai & Hitung"
         Else
             Button3.Text = $"Halaman {currentPage + 1} »"
         End If
 
+        ' Update progress
+        UpdateProgress()
+
         ' Update info halaman di Label1
-        Label1.Text = $"Tes Minat Bakat, {LoggedFullName}! - Halaman {currentPage}/{totalPages}"
+        Label1.Text = $"📋 Tes Minat Bakat, {LoggedFullName}! - Halaman {currentPage}/{totalPages}"
+    End Sub
+
+    Private Sub UpdateProgress()
+        ' Hitung berapa pertanyaan yang sudah dijawab
+        Dim answeredCount As Integer = userAnswers.Count
+        Dim totalQuestions As Integer = questions.Count
+
+        ' Update label progress
+        LabelProgress.Text = $"Progress: {answeredCount} dari {totalQuestions} pertanyaan"
+
+        ' Update progress bar
+        ProgressBar1.Maximum = totalQuestions
+        ProgressBar1.Value = answeredCount
     End Sub
 
     Private Sub ClearDynamicControls()
-    ' Hapus semua controls yang dinamis
-    Dim controlsToRemove As New List(Of Control)
+        ' Hapus semua controls yang dinamis
+        Dim controlsToRemove As New List(Of Control)
 
-    For Each ctrl As Control In Me.Controls
-        If TypeOf ctrl.Tag Is String AndAlso ctrl.Tag.ToString() = "dynamic" Then
-            controlsToRemove.Add(ctrl)
-        ElseIf ctrl.Tag IsNot Nothing AndAlso Not TypeOf ctrl.Tag Is String Then
-            Try
-                Dim tagObj = ctrl.Tag
-                If tagObj.GetType().GetProperty("Type") IsNot Nothing Then
-                    Dim typeValue = tagObj.GetType().GetProperty("Type").GetValue(tagObj, Nothing)
-                    If typeValue IsNot Nothing AndAlso typeValue.ToString() = "dynamic" Then
-                        controlsToRemove.Add(ctrl)
+        For Each ctrl As Control In Me.Controls
+            If TypeOf ctrl.Tag Is String AndAlso ctrl.Tag.ToString() = "dynamic" Then
+                controlsToRemove.Add(ctrl)
+            ElseIf ctrl.Tag IsNot Nothing AndAlso Not TypeOf ctrl.Tag Is String Then
+                Try
+                    Dim tagObj = ctrl.Tag
+                    If tagObj.GetType().GetProperty("Type") IsNot Nothing Then
+                        Dim typeValue = tagObj.GetType().GetProperty("Type").GetValue(tagObj, Nothing)
+                        If typeValue IsNot Nothing AndAlso typeValue.ToString() = "dynamic" Then
+                            controlsToRemove.Add(ctrl)
+                        End If
                     End If
-                End If
-            Catch
-                ' Ignore
-            End Try
-        End If
-    Next
+                Catch
+                    ' Ignore
+                End Try
+            End If
+        Next
 
-    For Each ctrl In controlsToRemove
-        RemoveHandler CType(ctrl, RadioButton).CheckedChanged, AddressOf RadioButton_CheckedChanged
-        Me.Controls.Remove(ctrl)
-        ctrl.Dispose()
-    Next
-End Sub
+        For Each ctrl In controlsToRemove
+            If TypeOf ctrl Is Panel Then
+                ' Hapus semua radio button di panel terlebih dahulu
+                Dim panelControls As New List(Of Control)
+                For Each panelCtrl As Control In CType(ctrl, Panel).Controls
+                    panelControls.Add(panelCtrl)
+                Next
+
+                For Each panelCtrl In panelControls
+                    If TypeOf panelCtrl Is RadioButton Then
+                        RemoveHandler CType(panelCtrl, RadioButton).CheckedChanged, AddressOf RadioButton_CheckedChanged
+                    End If
+                    CType(ctrl, Panel).Controls.Remove(panelCtrl)
+                    panelCtrl.Dispose()
+                Next
+            End If
+
+            Me.Controls.Remove(ctrl)
+            ctrl.Dispose()
+        Next
+    End Sub
 
     Private Sub RadioButton_CheckedChanged(sender As Object, e As EventArgs)
         Dim rb As RadioButton = CType(sender, RadioButton)
@@ -244,6 +303,17 @@ End Sub
                     .CfUser = 1.0D
                 })
             End If
+
+            ' Update progress
+            UpdateProgress()
+        End If
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        ' Kembali ke halaman sebelumnya
+        If currentPage > 1 Then
+            currentPage -= 1
+            DisplayCurrentPage()
         End If
     End Sub
 
@@ -324,8 +394,9 @@ End Sub
 
                         MessageBox.Show("Tes berhasil diselesaikan! Hasil akan ditampilkan.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-                        ' Redirect ke Hasil Tes
+                        ' Redirect ke Hasil Tes dengan pass ParentDashboard
                         Dim hasilForm As New HasilTesMinatBakat()
+                        hasilForm.ParentDashboard = Me.ParentDashboard
                         hasilForm.Show()
                         Me.Close()
 
@@ -342,8 +413,28 @@ End Sub
     End Sub
 
     Private Sub TesMinatBakat_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        ' Konfirmasi jika ada jawaban yang belum disimpan
+        If userAnswers.Count > 0 AndAlso userAnswers.Count < questions.Count Then
+            Dim result As DialogResult = MessageBox.Show("Anda belum menyelesaikan tes. Apakah Anda yakin ingin keluar?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If result = DialogResult.No Then
+                e.Cancel = True
+                Return
+            End If
+        End If
+
         ' Kembali ke dashboard user
-        Dim dashboardUser As New DashboardUser()
-        dashboardUser.Show()
+        If ParentDashboard IsNot Nothing Then
+            ParentDashboard.Show()
+        Else
+            ' Jika tidak ada parent (seharusnya tidak terjadi), buat baru
+            ' Tapi ini berarti user membuka form ini secara langsung
+            If IsLoggedIn() Then
+                Dim dashboardUser As New DashboardUser()
+                dashboardUser.Show()
+            Else
+                Dim loginForm As New LoginForm()
+                loginForm.Show()
+            End If
+        End If
     End Sub
 End Class
