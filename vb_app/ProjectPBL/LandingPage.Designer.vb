@@ -22,83 +22,193 @@ Partial Class LandingPage
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Button1 = New Button()
-        PictureBox1 = New PictureBox()
-        Label1 = New Label()
-        Button3 = New Button()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(LandingPage))
+        Panel1 = New Panel()
+        Label5 = New Label()
+        PictureBox2 = New PictureBox()
+        Label3 = New Label()
         Label2 = New Label()
+        Label1 = New Label()
+        PictureBox1 = New PictureBox()
+        Panel2 = New Panel()
+        Label4 = New Label()
+        Button3 = New Button()
+        Button1 = New Button()
+        Panel1.SuspendLayout()
+        CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
+        Panel2.SuspendLayout()
         SuspendLayout()
         ' 
-        ' Button1
+        ' Panel1
         ' 
-        Button1.Location = New Point(142, 347)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(111, 52)
-        Button1.TabIndex = 0
-        Button1.Text = "Login "
-        Button1.UseVisualStyleBackColor = True
+        Panel1.BackColor = Color.FromArgb(CByte(41), CByte(128), CByte(185))
+        Panel1.Controls.Add(Label5)
+        Panel1.Controls.Add(PictureBox2)
+        Panel1.Controls.Add(Label3)
+        Panel1.Controls.Add(Label2)
+        Panel1.Controls.Add(Label1)
+        Panel1.Controls.Add(PictureBox1)
+        Panel1.Dock = DockStyle.Top
+        Panel1.Location = New Point(0, 0)
+        Panel1.Name = "Panel1"
+        Panel1.Size = New Size(900, 307)
+        Panel1.TabIndex = 0
         ' 
-        ' PictureBox1
+        ' Label5
         ' 
-        PictureBox1.Image = ProjectPBL.Resources.logo
-        PictureBox1.Location = New Point(212, 25)
-        PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(259, 205)
-        PictureBox1.SizeMode = PictureBoxSizeMode.StretchImage
-        PictureBox1.TabIndex = 3
-        PictureBox1.TabStop = False
+        Label5.AutoSize = True
+        Label5.Font = New Font("Segoe UI", 14.0F, FontStyle.Bold)
+        Label5.ForeColor = Color.White
+        Label5.Location = New Point(321, 187)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(261, 32)
+        Label5.TabIndex = 5
+        Label5.Text = "Berbasis Sistem Pakar"
+        Label5.TextAlign = ContentAlignment.MiddleCenter
         ' 
-        ' Label1
+        ' PictureBox2
         ' 
-        Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 13F)
-        Label1.Location = New Point(200, 242)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(283, 30)
-        Label1.TabIndex = 4
-        Label1.Text = "Selamat Datang di SITOPSI !"
+        PictureBox2.BackColor = Color.Transparent
+        PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), Image)
+        PictureBox2.Location = New Point(695, 21)
+        PictureBox2.Name = "PictureBox2"
+        PictureBox2.Size = New Size(180, 175)
+        PictureBox2.SizeMode = PictureBoxSizeMode.Zoom
+        PictureBox2.TabIndex = 4
+        PictureBox2.TabStop = False
         ' 
-        ' Button3
+        ' Label3
         ' 
-        Button3.Location = New Point(429, 347)
-        Button3.Name = "Button3"
-        Button3.Size = New Size(111, 52)
-        Button3.TabIndex = 5
-        Button3.Text = "Register"
-        Button3.UseVisualStyleBackColor = True
+        Label3.AutoSize = True
+        Label3.Font = New Font("Segoe UI", 12.0F)
+        Label3.ForeColor = Color.White
+        Label3.Location = New Point(230, 253)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(459, 28)
+        Label3.TabIndex = 3
+        Label3.Text = "Temukan topik skripsi yang sesuai dengan minatmu"
+        Label3.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 13F)
-        Label2.Location = New Point(170, 284)
+        Label2.Font = New Font("Segoe UI", 14.0F, FontStyle.Bold)
+        Label2.ForeColor = Color.White
+        Label2.Location = New Point(280, 155)
         Label2.Name = "Label2"
-        Label2.Size = New Size(348, 30)
-        Label2.TabIndex = 23
-        Label2.Text = "Sistem Topik Skripsi Berbasis Pakar"
+        Label2.Size = New Size(365, 32)
+        Label2.TabIndex = 2
+        Label2.Text = "Sistem Informasi Topik Skripsi "
+        Label2.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Font = New Font("Segoe UI", 32.0F, FontStyle.Bold)
+        Label1.ForeColor = Color.White
+        Label1.Location = New Point(331, 71)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(228, 72)
+        Label1.TabIndex = 1
+        Label1.Text = "SITOPSI"
+        Label1.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' PictureBox1
+        ' 
+        PictureBox1.BackColor = Color.Transparent
+        PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), Image)
+        PictureBox1.Location = New Point(28, 21)
+        PictureBox1.Name = "PictureBox1"
+        PictureBox1.Size = New Size(180, 175)
+        PictureBox1.SizeMode = PictureBoxSizeMode.Zoom
+        PictureBox1.TabIndex = 0
+        PictureBox1.TabStop = False
+        ' 
+        ' Panel2
+        ' 
+        Panel2.BackColor = Color.WhiteSmoke
+        Panel2.Controls.Add(Label4)
+        Panel2.Controls.Add(Button3)
+        Panel2.Controls.Add(Button1)
+        Panel2.Dock = DockStyle.Fill
+        Panel2.Location = New Point(0, 307)
+        Panel2.Name = "Panel2"
+        Panel2.Size = New Size(900, 293)
+        Panel2.TabIndex = 1
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.Font = New Font("Segoe UI", 18.0F, FontStyle.Bold)
+        Label4.ForeColor = Color.FromArgb(CByte(52), CByte(73), CByte(94))
+        Label4.Location = New Point(280, 60)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(302, 41)
+        Label4.TabIndex = 2
+        Label4.Text = "Selamat Datang! 👋"
+        Label4.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' Button3
+        ' 
+        Button3.BackColor = Color.FromArgb(CByte(46), CByte(204), CByte(113))
+        Button3.Cursor = Cursors.Hand
+        Button3.FlatAppearance.BorderSize = 0
+        Button3.FlatStyle = FlatStyle.Flat
+        Button3.Font = New Font("Segoe UI", 14.0F, FontStyle.Bold)
+        Button3.ForeColor = Color.White
+        Button3.Location = New Point(500, 160)
+        Button3.Name = "Button3"
+        Button3.Size = New Size(220, 65)
+        Button3.TabIndex = 1
+        Button3.Text = "📝 Register"
+        Button3.UseVisualStyleBackColor = False
+        ' 
+        ' Button1
+        ' 
+        Button1.BackColor = Color.FromArgb(CByte(52), CByte(152), CByte(219))
+        Button1.Cursor = Cursors.Hand
+        Button1.FlatAppearance.BorderSize = 0
+        Button1.FlatStyle = FlatStyle.Flat
+        Button1.Font = New Font("Segoe UI", 14.0F, FontStyle.Bold)
+        Button1.ForeColor = Color.White
+        Button1.Location = New Point(180, 160)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(220, 65)
+        Button1.TabIndex = 0
+        Button1.Text = "🔐 Login"
+        Button1.UseVisualStyleBackColor = False
         ' 
         ' LandingPage
         ' 
-        AutoScaleDimensions = New SizeF(8F, 20F)
+        AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(724, 450)
-        Controls.Add(Label2)
-        Controls.Add(Button3)
-        Controls.Add(Label1)
-        Controls.Add(PictureBox1)
-        Controls.Add(Button1)
+        ClientSize = New Size(900, 600)
+        Controls.Add(Panel2)
+        Controls.Add(Panel1)
+        FormBorderStyle = FormBorderStyle.FixedSingle
+        MaximizeBox = False
         Name = "LandingPage"
-        Text = "SITOPSI - Landing Page"
+        StartPosition = FormStartPosition.CenterScreen
+        Text = "SITOPSI - Sistem Informasi Topik Skripsi"
+        Panel1.ResumeLayout(False)
+        Panel1.PerformLayout()
+        CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
+        Panel2.ResumeLayout(False)
+        Panel2.PerformLayout()
         ResumeLayout(False)
-        PerformLayout()
     End Sub
 
-    Friend WithEvents Button1 As Button
+    Friend WithEvents Panel1 As Panel
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents Label1 As Label
-    Friend WithEvents Button3 As Button
     Friend WithEvents Label2 As Label
-
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Panel2 As Panel
+    Friend WithEvents Button1 As Button
+    Friend WithEvents Button3 As Button
+    Friend WithEvents Label4 As Label
+    Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents Label5 As Label
 End Class
