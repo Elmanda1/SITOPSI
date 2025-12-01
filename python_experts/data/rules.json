@@ -1,3 +1,4 @@
 {
-  "rules": []
+  "rules": [],
+  "note": "File ini opsional. Semua data utama (questions, options, CF weights, categories) sudah ada di database MySQL. File ini bisa digunakan untuk aturan tambahan jika diperlukan di masa depan."
 }
