@@ -1,12 +1,47 @@
 ﻿Imports MySql.Data.MySqlClient
 
 Public Class LoginForm
+    ' Reference ke parent form (Landing Page)
+    Public Property ParentLanding As LandingPage
+
     Private Sub LoginForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Set password character
         TextBox2.PasswordChar = "●"c
         
         ' Center form
         Me.StartPosition = FormStartPosition.CenterScreen
+
+        ' Load logo SITOPSI kiri
+        Try
+            Dim logoPath As String = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logobg.jpg")
+            If System.IO.File.Exists(logoPath) Then
+                PictureBox1.Image = Image.FromFile(logoPath)
+            Else
+                ' Try PNG version
+                logoPath = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logo.png")
+                If System.IO.File.Exists(logoPath) Then
+                    PictureBox1.Image = Image.FromFile(logoPath)
+                End If
+            End If
+        Catch ex As Exception
+            ' Silent fail - logo tidak ditemukan
+        End Try
+
+        ' Load logo PNJ kanan
+        Try
+            Dim pnjPath As String = System.IO.Path.Combine(Application.StartupPath, "..\..\..\Logo_Politeknik_Negeri_Jakarta.jpg")
+            If System.IO.File.Exists(pnjPath) Then
+                PictureBox2.Image = Image.FromFile(pnjPath)
+            Else
+                ' Try PNG version
+                pnjPath = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logo_pnj.png")
+                If System.IO.File.Exists(pnjPath) Then
+                    PictureBox2.Image = Image.FromFile(pnjPath)
+                End If
+            End If
+        Catch ex As Exception
+            ' Silent fail - logo tidak ditemukan
+        End Try
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -103,6 +138,11 @@ Public Class LoginForm
 
                                 MessageBox.Show($"Selamat datang, {LoggedFullName}!", "Login Berhasil", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
+                                ' Close parent landing page
+                                If ParentLanding IsNot Nothing Then
+                                    ParentLanding.Close()
+                                End If
+
                                 ' Redirect berdasarkan role
                                 If IsAdmin() Then
                                     Dim dashboardAdmin As New DashboardAdmin()
@@ -135,9 +175,21 @@ Public Class LoginForm
         End Try
     End Sub
 
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        ' Kembali ke landing page
+        If ParentLanding IsNot Nothing Then
+            ParentLanding.Show()
+        Else
+            Dim landingPage As New LandingPage()
+            landingPage.Show()
+        End If
+        Me.Close()
+    End Sub
+
     Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
         ' Forgot Password - Buka form change password
         Dim changePasswordForm As New ChangePassword()
+        changePasswordForm.ParentLogin = Me
         changePasswordForm.Show()
         Me.Hide()
     End Sub
@@ -159,8 +211,15 @@ Public Class LoginForm
     End Sub
 
     Private Sub LoginForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        ' Kembali ke landing page
-        Dim landingPage As New LandingPage()
-        landingPage.Show()
+        ' Hanya tampilkan landing page jika tidak ada dashboard yang terbuka
+        ' DAN session masih kosong (tidak login)
+        If Not IsLoggedIn() Then
+            If ParentLanding IsNot Nothing Then
+                ParentLanding.Show()
+            Else
+                Dim landingPage As New LandingPage()
+                landingPage.Show()
+            End If
+        End If
     End Sub
 End Class

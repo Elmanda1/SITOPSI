@@ -1,12 +1,49 @@
 ﻿Imports MySql.Data.MySqlClient
 
 Public Class RegisterForm
+    Private isRegistrationSuccess As Boolean = False
+
     Private Sub RegisterForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Center form
         Me.StartPosition = FormStartPosition.CenterScreen
 
         ' Set default radio button
         RadioButton1.Checked = True
+
+        ' Set password character untuk TextBox5
+        TextBox5.PasswordChar = "●"c
+
+        ' Load logo SITOPSI kiri
+        Try
+            Dim logoPath As String = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logobg.jpg")
+            If System.IO.File.Exists(logoPath) Then
+                PictureBox1.Image = Image.FromFile(logoPath)
+            Else
+                ' Try PNG version
+                logoPath = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logo.png")
+                If System.IO.File.Exists(logoPath) Then
+                    PictureBox1.Image = Image.FromFile(logoPath)
+                End If
+            End If
+        Catch ex As Exception
+            ' Silent fail - logo tidak ditemukan
+        End Try
+
+        ' Load logo PNJ kanan
+        Try
+            Dim pnjPath As String = System.IO.Path.Combine(Application.StartupPath, "..\..\..\Logo_Politeknik_Negeri_Jakarta.jpg")
+            If System.IO.File.Exists(pnjPath) Then
+                PictureBox2.Image = Image.FromFile(pnjPath)
+            Else
+                ' Try PNG version
+                pnjPath = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logo_pnj.png")
+                If System.IO.File.Exists(pnjPath) Then
+                    PictureBox2.Image = Image.FromFile(pnjPath)
+                End If
+            End If
+        Catch ex As Exception
+            ' Silent fail - logo tidak ditemukan
+        End Try
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -36,17 +73,32 @@ Public Class RegisterForm
             Return
         End If
 
+        ' Validasi username
+        If String.IsNullOrWhiteSpace(TextBox4.Text) Then
+            MessageBox.Show("Username tidak boleh kosong!", "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            TextBox4.Focus()
+            Return
+        End If
+
+        ' Validasi password
+        If String.IsNullOrWhiteSpace(TextBox5.Text) Then
+            MessageBox.Show("Password tidak boleh kosong!", "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            TextBox5.Focus()
+            Return
+        End If
+
+        ' Validasi panjang password minimal 5 karakter
+        If TextBox5.Text.Length < 5 Then
+            MessageBox.Show("Password minimal 5 karakter!", "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            TextBox5.Focus()
+            Return
+        End If
+
         ' Validasi gender
         If Not RadioButton1.Checked And Not RadioButton2.Checked Then
             MessageBox.Show("Pilih jenis kelamin!", "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
-
-        ' Generate username dari email (bagian sebelum @)
-        Dim generatedUsername As String = TextBox3.Text.Split("@"c)(0).ToLower()
-
-        ' Generate password default (bisa diubah nanti)
-        Dim defaultPassword As String = "12345"
 
         Try
             Using conn As New MySqlConnection(ConnectionString)
@@ -55,13 +107,13 @@ Public Class RegisterForm
                 ' Cek apakah username sudah ada
                 Dim checkQuery As String = "SELECT COUNT(*) FROM users WHERE username = @username"
                 Using checkCmd As New MySqlCommand(checkQuery, conn)
-                    checkCmd.Parameters.AddWithValue("@username", generatedUsername)
+                    checkCmd.Parameters.AddWithValue("@username", TextBox4.Text.Trim())
                     Dim count As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
 
                     If count > 0 Then
-                        ' Username sudah ada, tambahkan angka random
-                        Dim rnd As New Random()
-                        generatedUsername = generatedUsername & rnd.Next(100, 999).ToString()
+                        MessageBox.Show("Username sudah digunakan! Pilih username lain.", "Registrasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        TextBox4.Focus()
+                        Return
                     End If
                 End Using
 
@@ -73,6 +125,7 @@ Public Class RegisterForm
 
                     If emailCount > 0 Then
                         MessageBox.Show("Email sudah terdaftar! Gunakan email lain atau login.", "Registrasi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        TextBox3.Focus()
                         Return
                     End If
                 End Using
@@ -83,21 +136,22 @@ Public Class RegisterForm
 
                 Using insertCmd As New MySqlCommand(insertQuery, conn)
                     insertCmd.Parameters.AddWithValue("@fullname", TextBox1.Text.Trim())
-                    insertCmd.Parameters.AddWithValue("@username", generatedUsername)
-                    insertCmd.Parameters.AddWithValue("@password", defaultPassword)
+                    insertCmd.Parameters.AddWithValue("@username", TextBox4.Text.Trim())
+                    insertCmd.Parameters.AddWithValue("@password", TextBox5.Text)
                     insertCmd.Parameters.AddWithValue("@email", TextBox3.Text.Trim())
                     insertCmd.Parameters.AddWithValue("@no_hp", TextBox2.Text.Trim())
 
                     Dim result As Integer = insertCmd.ExecuteNonQuery()
 
                     If result > 0 Then
+                        isRegistrationSuccess = True
+
                         MessageBox.Show($"Registrasi berhasil!" & vbCrLf & vbCrLf &
-                                      $"Username: {generatedUsername}" & vbCrLf &
-                                      $"Password: {defaultPassword}" & vbCrLf & vbCrLf &
-                                      "Silakan login dan ganti password Anda!",
+                                      $"Username: {TextBox4.Text.Trim()}" & vbCrLf &
+                                      "Silakan login dengan akun Anda!",
                                       "Registrasi Berhasil", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-                        ' Kembali ke login form
+                        ' Langsung ke login form
                         Dim loginForm As New LoginForm()
                         loginForm.Show()
                         Me.Close()
@@ -114,13 +168,22 @@ Public Class RegisterForm
         End Try
     End Sub
 
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        ' Kembali ke landing page
+        Dim landingPage As New LandingPage()
+        landingPage.Show()
+        Me.Close()
+    End Sub
+
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
         ' Keep existing
     End Sub
 
     Private Sub RegisterForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        ' Kembali ke landing page
-        Dim landingPage As New LandingPage()
-        landingPage.Show()
+        ' Hanya tampilkan landing page jika tidak berhasil register
+        If Not isRegistrationSuccess Then
+            Dim landingPage As New LandingPage()
+            landingPage.Show()
+        End If
     End Sub
 End Class
