@@ -16,7 +16,7 @@ Imports System.Reflection
 <Assembly: System.Reflection.AssemblyCompanyAttribute("ProjectPBL"),  _
  Assembly: System.Reflection.AssemblyConfigurationAttribute("Debug"),  _
  Assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0"),  _
- Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0"),  _
+ Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2b17cd4356016a97c689812a0f3262949a77fe3c"),  _
  Assembly: System.Reflection.AssemblyProductAttribute("ProjectPBL"),  _
  Assembly: System.Reflection.AssemblyTitleAttribute("ProjectPBL"),  _
  Assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0"),  _

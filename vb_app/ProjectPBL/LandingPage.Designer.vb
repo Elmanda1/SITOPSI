@@ -26,7 +26,6 @@ Partial Class LandingPage
         PictureBox1 = New PictureBox()
         Label1 = New Label()
         Button3 = New Button()
-        Label6 = New Label()
         Label2 = New Label()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -42,9 +41,11 @@ Partial Class LandingPage
         ' 
         ' PictureBox1
         ' 
+        PictureBox1.Image = ProjectPBL.Resources.logo
         PictureBox1.Location = New Point(212, 25)
         PictureBox1.Name = "PictureBox1"
         PictureBox1.Size = New Size(259, 205)
+        PictureBox1.SizeMode = PictureBoxSizeMode.StretchImage
         PictureBox1.TabIndex = 3
         PictureBox1.TabStop = False
         ' 
@@ -67,16 +68,6 @@ Partial Class LandingPage
         Button3.Text = "Register"
         Button3.UseVisualStyleBackColor = True
         ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 13F)
-        Label6.Location = New Point(310, 111)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(71, 30)
-        Label6.TabIndex = 22
-        Label6.Text = "LOGO"
-        ' 
         ' Label2
         ' 
         Label2.AutoSize = True
@@ -93,13 +84,12 @@ Partial Class LandingPage
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(724, 450)
         Controls.Add(Label2)
-        Controls.Add(Label6)
         Controls.Add(Button3)
         Controls.Add(Label1)
         Controls.Add(PictureBox1)
         Controls.Add(Button1)
         Name = "LandingPage"
-        Text = "Form1"
+        Text = "SITOPSI - Landing Page"
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
@@ -109,7 +99,6 @@ Partial Class LandingPage
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents Label1 As Label
     Friend WithEvents Button3 As Button
-    Friend WithEvents Label6 As Label
     Friend WithEvents Label2 As Label
 
 End Class

@@ -30,7 +30,6 @@ Partial Class LoginForm
         Label3 = New Label()
         TextBox2 = New TextBox()
         Label4 = New Label()
-        Label6 = New Label()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -46,9 +45,11 @@ Partial Class LoginForm
         ' 
         ' PictureBox1
         ' 
+        PictureBox1.Image = My.Resources.Resources.logo
         PictureBox1.Location = New Point(265, 12)
         PictureBox1.Name = "PictureBox1"
         PictureBox1.Size = New Size(259, 205)
+        PictureBox1.SizeMode = PictureBoxSizeMode.StretchImage
         PictureBox1.TabIndex = 7
         PictureBox1.TabStop = False
         ' 
@@ -104,22 +105,11 @@ Partial Class LoginForm
         Label4.TabIndex = 13
         Label4.Text = "Forgot Password"
         ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 13F)
-        Label6.Location = New Point(365, 95)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(71, 30)
-        Label6.TabIndex = 21
-        Label6.Text = "LOGO"
-        ' 
         ' LoginForm
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 496)
-        Controls.Add(Label6)
         Controls.Add(Label4)
         Controls.Add(TextBox2)
         Controls.Add(Label3)
@@ -143,5 +133,4 @@ Partial Class LoginForm
     Friend WithEvents Label3 As Label
     Friend WithEvents TextBox2 As TextBox
     Friend WithEvents Label4 As Label
-    Friend WithEvents Label6 As Label
 End Class

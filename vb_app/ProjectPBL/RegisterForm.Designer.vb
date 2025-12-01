@@ -34,7 +34,6 @@ Partial Class RegisterForm
         RadioButton1 = New RadioButton()
         RadioButton2 = New RadioButton()
         Button1 = New Button()
-        Label6 = New Label()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -43,6 +42,7 @@ Partial Class RegisterForm
         PictureBox1.Location = New Point(263, 21)
         PictureBox1.Name = "PictureBox1"
         PictureBox1.Size = New Size(259, 205)
+        PictureBox1.SizeMode = PictureBoxSizeMode.StretchImage
         PictureBox1.TabIndex = 8
         PictureBox1.TabStop = False
         ' 
@@ -144,22 +144,11 @@ Partial Class RegisterForm
         Button1.Text = "Register"
         Button1.UseVisualStyleBackColor = True
         ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 13F)
-        Label6.Location = New Point(356, 108)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(71, 30)
-        Label6.TabIndex = 20
-        Label6.Text = "LOGO"
-        ' 
         ' RegisterForm
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 585)
-        Controls.Add(Label6)
         Controls.Add(Button1)
         Controls.Add(RadioButton2)
         Controls.Add(RadioButton1)
@@ -173,7 +162,7 @@ Partial Class RegisterForm
         Controls.Add(Label1)
         Controls.Add(PictureBox1)
         Name = "RegisterForm"
-        Text = "RegisterForm"
+        Text = "Register - SITOPSI"
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
@@ -191,5 +180,4 @@ Partial Class RegisterForm
     Friend WithEvents RadioButton1 As RadioButton
     Friend WithEvents RadioButton2 As RadioButton
     Friend WithEvents Button1 As Button
-    Friend WithEvents Label6 As Label
 End Class

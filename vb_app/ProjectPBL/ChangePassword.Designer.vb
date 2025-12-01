@@ -23,7 +23,6 @@ Partial Class ChangePassword
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         PictureBox1 = New PictureBox()
-        Label6 = New Label()
         Label2 = New Label()
         TextBox1 = New TextBox()
         Label1 = New Label()
@@ -37,21 +36,13 @@ Partial Class ChangePassword
         ' 
         ' PictureBox1
         ' 
+        PictureBox1.Image = ProjectPBL.Resources.logo
         PictureBox1.Location = New Point(256, 34)
         PictureBox1.Name = "PictureBox1"
         PictureBox1.Size = New Size(259, 205)
+        PictureBox1.SizeMode = PictureBoxSizeMode.StretchImage
         PictureBox1.TabIndex = 9
         PictureBox1.TabStop = False
-        ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 13F)
-        Label6.Location = New Point(354, 118)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(71, 30)
-        Label6.TabIndex = 21
-        Label6.Text = "LOGO"
         ' 
         ' Label2
         ' 
@@ -133,17 +124,15 @@ Partial Class ChangePassword
         Controls.Add(Label1)
         Controls.Add(TextBox1)
         Controls.Add(Label2)
-        Controls.Add(Label6)
         Controls.Add(PictureBox1)
         Name = "ChangePassword"
-        Text = "ChangePassword"
+        Text = "Change Password - SITOPSI"
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
 
     Friend WithEvents PictureBox1 As PictureBox
-    Friend WithEvents Label6 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Label1 As Label
