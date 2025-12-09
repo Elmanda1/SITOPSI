@@ -1,7 +1,12 @@
 Imports MySql.Data.MySqlClient
 
 Public Class UserManagementForm
-    Public Property ParentDashboard As DashboardAdmin
+    Public Property ParentDashboardAdmin As DashboardAdmin
+
+    Private ReadOnly navyColor As Color = Color.FromArgb(44, 62, 80)
+    Private ReadOnly lightNavyColor As Color = Color.FromArgb(52, 73, 94)
+    Private ReadOnly whiteColor As Color = Color.White
+    Private ReadOnly lightGreyHoverColor As Color = Color.FromArgb(236, 240, 241)
 
     Private Sub UserManagementForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Not IsLoggedIn() Or Not IsAdmin() Then
@@ -10,203 +15,109 @@ Public Class UserManagementForm
             Return
         End If
 
-        Me.StartPosition = FormStartPosition.CenterScreen
-        Me.BackColor = Color.FromArgb(236, 240, 241)
-        Me.Size = New Size(1100, 700)
-        Me.Text = "Manajemen User - SITOPSI"
-        
-        BuildUI()
+        ' Add Handlers
+        AddHandler txtSearch.TextChanged, AddressOf TxtSearch_TextChanged
+        AddHandler dgvUsers.CellDoubleClick, AddressOf DgvUsers_CellDoubleClick
+        AddHandler btnRefresh.Click, AddressOf BtnRefresh_Click
+        AddHandler btnBack.Click, AddressOf BtnBack_Click
+
+        AddHandler btnRefresh.MouseEnter, AddressOf Button_MouseEnter
+        AddHandler btnRefresh.MouseLeave, AddressOf Button_MouseLeave
+        AddHandler btnBack.MouseEnter, AddressOf Button_MouseEnter
+        AddHandler btnBack.MouseLeave, AddressOf Button_MouseLeave
+
         LoadUsersData()
     End Sub
 
-    Private Sub BuildUI()
-        Me.Controls.Clear()
-
-        ' Header Panel
-        Dim headerPanel As New Panel() With {
-            .Dock = DockStyle.Top,
-            .Height = 80,
-            .BackColor = Color.FromArgb(41, 128, 185)
-        }
-        Me.Controls.Add(headerPanel)
-
-        Dim lblTitle As New Label() With {
-            .Text = "?? Manajemen User",
-            .Font = New Font("Segoe UI", 16, FontStyle.Bold),
-            .ForeColor = Color.White,
-            .AutoSize = True,
-            .Location = New Point(20, 25)
-        }
-        headerPanel.Controls.Add(lblTitle)
-
-        ' Back Button
-        Dim btnBack As New Button() With {
-            .Text = "? Kembali",
-            .Font = New Font("Segoe UI", 10, FontStyle.Regular),
-            .Size = New Size(120, 35),
-            .Location = New Point(Me.ClientSize.Width - 140, 22),
-            .BackColor = Color.FromArgb(52, 73, 94),
-            .ForeColor = Color.White,
-            .FlatStyle = FlatStyle.Flat,
-            .Cursor = Cursors.Hand
-        }
-        btnBack.FlatAppearance.BorderSize = 0
-        AddHandler btnBack.Click, AddressOf BtnBack_Click
-        headerPanel.Controls.Add(btnBack)
-
-        ' Main Content Panel
-        Dim contentPanel As New Panel() With {
-            .Location = New Point(0, 80),
-            .Size = New Size(Me.ClientSize.Width, Me.ClientSize.Height - 80),
-            .BackColor = Color.FromArgb(236, 240, 241),
-            .AutoScroll = True
-        }
-        Me.Controls.Add(contentPanel)
-
-        ' Panel for DataGridView
-        Dim gridPanel As New Panel() With {
-            .Location = New Point(20, 20),
-            .Size = New Size(1040, 560),
-            .BackColor = Color.White,
-            .BorderStyle = BorderStyle.FixedSingle
-        }
-        contentPanel.Controls.Add(gridPanel)
-
-        ' Grid Title
-        Dim lblGridTitle As New Label() With {
-            .Text = "Daftar User",
-            .Font = New Font("Segoe UI", 12, FontStyle.Bold),
-            .ForeColor = Color.FromArgb(44, 62, 80),
-            .AutoSize = True,
-            .Location = New Point(20, 20)
-        }
-        gridPanel.Controls.Add(lblGridTitle)
-
-        ' Search Box
-        Dim txtSearch As New TextBox() With {
-            .Name = "txtSearch",
-            .Font = New Font("Segoe UI", 9),
-            .Size = New Size(250, 25),
-            .Location = New Point(20, 55),
-            .PlaceholderText = "Cari nama atau username..."
-        }
-        gridPanel.Controls.Add(txtSearch)
-        AddHandler txtSearch.TextChanged, AddressOf TxtSearch_TextChanged
-
-        ' DataGridView
-        Dim dgv As New DataGridView() With {
-            .Name = "dgvUsers",
-            .Location = New Point(20, 90),
-            .Size = New Size(1000, 450),
-            .BackgroundColor = Color.White,
-            .BorderStyle = BorderStyle.None,
-            .AllowUserToAddRows = False,
-            .AllowUserToDeleteRows = False,
-            .ReadOnly = True,
-            .SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-            .RowHeadersVisible = False,
-            .ColumnHeadersHeight = 40
-        }
-        gridPanel.Controls.Add(dgv)
-
-        ' DataGridView Styling
-        dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94)
-        dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White
-        dgv.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 10, FontStyle.Bold)
-        dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-        dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 152, 219)
-        dgv.DefaultCellStyle.SelectionForeColor = Color.White
-        dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(236, 240, 241)
-
-        AddHandler dgv.CellDoubleClick, AddressOf DgvUsers_CellDoubleClick
-    End Sub
-
-    Private Sub LoadUsersData()
+    Private Sub LoadUsersData(Optional filter As String = "")
         Try
-            Dim dgv As DataGridView = CType(Me.Controls.Find("dgvUsers", True)(0), DataGridView)
-            
             Using conn As New MySqlConnection(ConnectionString)
                 conn.Open()
-                Dim query As String = "SELECT u.id AS 'ID', u.fullname AS 'Nama Lengkap', u.username AS 'Username', u.email AS 'Email', r.name AS 'Role', u.minat_bakat AS 'Minat Bakat', u.status AS 'Status', u.created_at AS 'Terdaftar' FROM users u INNER JOIN roles r ON u.role_id = r.id ORDER BY u.created_at DESC"
+                Dim query As String = "SELECT u.user_id AS 'ID', u.fullname AS 'Nama Lengkap', u.username AS 'Username', " &
+                                     "u.email AS 'Email', r.name AS 'Role', u.minat_bakat AS 'Minat Bakat', " &
+                                     "u.status AS 'Status', u.created_at AS 'Terdaftar' " &
+                                     "FROM users u " &
+                                     "INNER JOIN roles r ON u.role_id = r.role_id "
+                
+                If Not String.IsNullOrWhiteSpace(filter) Then
+                    query &= "WHERE u.fullname LIKE @search OR u.username LIKE @search OR u.email LIKE @search "
+                End If
+
+                query &= "ORDER BY u.created_at DESC"
                 
                 Using adapter As New MySqlDataAdapter(query, conn)
+                    If Not String.IsNullOrWhiteSpace(filter) Then
+                        adapter.SelectCommand.Parameters.AddWithValue("@search", "%" & filter & "%")
+                    End If
+
                     Dim dt As New DataTable()
                     adapter.Fill(dt)
-                    dgv.DataSource = dt
+                    dgvUsers.DataSource = dt
                     
-                    ' Hide ID column
-                    If dgv.Columns.Count > 0 Then
-                        dgv.Columns("ID").Visible = False
+                    If dgvUsers.Columns.Count > 0 AndAlso dgvUsers.Columns.Contains("ID") Then
+                        dgvUsers.Columns("ID").Visible = False
                     End If
                 End Using
             End Using
         Catch ex As Exception
-            MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error memuat data user: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
     Private Sub TxtSearch_TextChanged(sender As Object, e As EventArgs)
-        Try
-            Dim txtSearch As TextBox = CType(sender, TextBox)
-            Dim dgv As DataGridView = CType(Me.Controls.Find("dgvUsers", True)(0), DataGridView)
-            
-            Using conn As New MySqlConnection(ConnectionString)
-                conn.Open()
-                Dim query As String = "SELECT u.id AS 'ID', u.fullname AS 'Nama Lengkap', u.username AS 'Username', u.email AS 'Email', r.name AS 'Role', u.minat_bakat AS 'Minat Bakat', u.status AS 'Status', u.created_at AS 'Terdaftar' FROM users u INNER JOIN roles r ON u.role_id = r.id WHERE u.fullname LIKE @search OR u.username LIKE @search OR u.email LIKE @search ORDER BY u.created_at DESC"
-                
-                Using adapter As New MySqlDataAdapter(query, conn)
-                    adapter.SelectCommand.Parameters.AddWithValue("@search", $"%{txtSearch.Text}%")
-                    Dim dt As New DataTable()
-                    adapter.Fill(dt)
-                    dgv.DataSource = dt
-                    
-                    If dgv.Columns.Count > 0 Then
-                        dgv.Columns("ID").Visible = False
-                    End If
-                End Using
-            End Using
-        Catch ex As Exception
-            ' Silent error for search
-        End Try
+        LoadUsersData(txtSearch.Text)
     End Sub
 
     Private Sub DgvUsers_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs)
         If e.RowIndex >= 0 Then
             Try
-                Dim dgv As DataGridView = CType(sender, DataGridView)
-                Dim row As DataGridViewRow = dgv.Rows(e.RowIndex)
-                
-                Dim userId As Integer = Convert.ToInt32(row.Cells("ID").Value)
-                Dim username As String = row.Cells("Username").Value.ToString()
-                Dim fullname As String = row.Cells("Nama Lengkap").Value.ToString()
+                Dim row As DataGridViewRow = dgvUsers.Rows(e.RowIndex)
                 Dim status As String = row.Cells("Status").Value.ToString()
-                
-                Dim message As String = $"Detail User:{vbCrLf}{vbCrLf}" &
-                    $"Nama: {fullname}{vbCrLf}" &
-                    $"Username: {username}{vbCrLf}" &
-                    $"Email: {row.Cells("Email").Value}{vbCrLf}" &
-                    $"Role: {row.Cells("Role").Value}{vbCrLf}" &
-                    $"Status: {status}{vbCrLf}" &
-                    $"Minat Bakat: {If(IsDBNull(row.Cells("Minat Bakat").Value), "Belum tes", row.Cells("Minat Bakat").Value)}"
+                Dim message As String = "Detail User:" & vbCrLf & vbCrLf &
+                    "Nama: " & row.Cells("Nama Lengkap").Value.ToString() & vbCrLf &
+                    "Username: " & row.Cells("Username").Value.ToString() & vbCrLf &
+                    "Email: " & row.Cells("Email").Value.ToString() & vbCrLf &
+                    "Role: " & row.Cells("Role").Value.ToString() & vbCrLf &
+                    "Status: " & status & vbCrLf &
+                    "Minat Bakat: " & If(IsDBNull(row.Cells("Minat Bakat").Value), "Belum tes", row.Cells("Minat Bakat").Value.ToString())
                 
                 MessageBox.Show(message, "Detail User", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Catch ex As Exception
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Error menampilkan detail: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End If
     End Sub
 
+    Private Sub BtnRefresh_Click(sender As Object, e As EventArgs)
+        txtSearch.Clear()
+        LoadUsersData()
+    End Sub
+
     Private Sub BtnBack_Click(sender As Object, e As EventArgs)
-        If ParentDashboard IsNot Nothing Then
-            ParentDashboard.Show()
-        End If
         Me.Close()
     End Sub
 
     Private Sub UserManagementForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        If ParentDashboard IsNot Nothing Then
-            ParentDashboard.Show()
+        If ParentDashboardAdmin IsNot Nothing AndAlso Not ParentDashboardAdmin.IsDisposed Then
+            ParentDashboardAdmin.Show()
+        End If
+    End Sub
+
+    Private Sub Button_MouseEnter(sender As Object, e As EventArgs)
+        Dim btn = CType(sender, Button)
+        If btn Is btnRefresh Then
+            btn.BackColor = lightNavyColor
+        Else ' btnBack
+            btn.BackColor = lightGreyHoverColor
+        End If
+    End Sub
+
+    Private Sub Button_MouseLeave(sender As Object, e As EventArgs)
+        Dim btn = CType(sender, Button)
+        If btn Is btnRefresh Then
+            btn.BackColor = navyColor
+        Else ' btnBack
+            btn.BackColor = whiteColor
         End If
     End Sub
 End Class
