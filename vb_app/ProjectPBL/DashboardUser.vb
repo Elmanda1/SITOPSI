@@ -1,59 +1,71 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
+Imports System.Diagnostics
 
 Public Class DashboardUser
+    Public Property ParentLanding As LandingPage
+    Private isLoggingOut As Boolean = False
+    Private ReadOnly cardHoverColor As Color = Color.FromArgb(240, 240, 240)
+    Private ReadOnly cardDefaultColor As Color = Color.White
+
     Private Sub DashboardUser_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Cek apakah user sudah login
-        If Not IsLoggedIn() Then
-            MessageBox.Show("Silakan login terlebih dahulu!", "Akses Ditolak", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Dim loginForm As New LoginForm()
-            loginForm.Show()
-            Me.Close()
-            Return
-        End If
-
-        ' Cek apakah user adalah mahasiswa
-        If Not IsMahasiswa() Then
-            MessageBox.Show("Anda tidak memiliki akses ke halaman ini!", "Akses Ditolak", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-            ' Redirect ke dashboard yang sesuai
-            If IsAdmin() Then
-                Dim dashboardAdmin As New DashboardAdmin()
-                dashboardAdmin.Show()
-            Else
+        Try
+            ' Cek apakah user sudah login
+            If Not IsLoggedIn() Then
+                MessageBox.Show("Silakan login terlebih dahulu!", "Akses Ditolak", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Dim loginForm As New LoginForm()
                 loginForm.Show()
+                Me.Close()
+                Return
             End If
 
-            Me.Close()
-            Return
-        End If
+            ' Cek apakah user adalah mahasiswa
+            If Not IsMahasiswa() Then
+                MessageBox.Show("Anda tidak memiliki akses ke halaman ini!", "Akses Ditolak", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                If IsAdmin() Then
+                    Dim dashboardAdmin As New DashboardAdmin()
+                    dashboardAdmin.ParentLanding = Me.ParentLanding
+                    dashboardAdmin.Show()
+                Else
+                    Dim loginForm As New LoginForm()
+                    loginForm.ParentLanding = Me.ParentLanding
+                    loginForm.Show()
+                End If
+                Me.Close()
+                Return
+            End If
 
-        ' Center form
-        Me.StartPosition = FormStartPosition.CenterScreen
-        Me.BackColor = Color.FromArgb(236, 240, 241)
+            ' Center form
+            Me.StartPosition = FormStartPosition.CenterScreen
+            Me.BackColor = Color.FromArgb(245, 247, 250)
+            Me.Text = "Dashboard Mahasiswa - SITOPSI"
 
-        ' Set form title
-        Me.Text = $"Dashboard Mahasiswa - SITOPSI"
+            ' Setup modern UI
+            SetupModernUI()
 
-        ' Setup modern UI
-        SetupModernUI()
+        Catch ex As Exception
+            MessageBox.Show("Error loading dashboard: " & ex.Message & vbCrLf & vbCrLf & ex.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub SetupModernUI()
-        ' Clear existing controls except basic ones
-        Me.Controls.Clear()
+        ' Hide all designer controls first instead of clearing
+        For Each ctrl As Control In Me.Controls
+            ctrl.Visible = False
+        Next
+
+        Me.ClientSize = New Size(1000, 650)
 
         ' Header Panel
         Dim headerPanel As New Panel() With {
             .Dock = DockStyle.Top,
             .Height = 100,
-            .BackColor = Color.FromArgb(41, 128, 185)
+            .BackColor = Color.FromArgb(12, 45, 72) ' Navy Blue
         }
         Me.Controls.Add(headerPanel)
 
         ' Welcome Label
         Dim lblWelcome As New Label() With {
-            .Text = $"🎓 Selamat Datang, {LoggedFullName}!",
+            .Text = "🎓 Selamat Datang, " & LoggedFullName & "!",
             .Font = New Font("Segoe UI", 18, FontStyle.Bold),
             .ForeColor = Color.White,
             .AutoSize = True,
@@ -62,12 +74,11 @@ Public Class DashboardUser
         headerPanel.Controls.Add(lblWelcome)
 
         ' Info minat bakat
+        Dim minatText As String = If(String.IsNullOrEmpty(LoggedMinatBakat), "Anda belum mengikuti tes minat bakat.", "Minat Bakat Anda: " & LoggedMinatBakat)
         Dim lblMinatBakat As New Label() With {
-            .Text = If(String.IsNullOrEmpty(LoggedMinatBakat), 
-                      "Belum mengikuti tes minat bakat", 
-                      $"Minat Bakat: {LoggedMinatBakat}"),
+            .Text = minatText,
             .Font = New Font("Segoe UI", 10, FontStyle.Regular),
-            .ForeColor = Color.FromArgb(236, 240, 241),
+            .ForeColor = Color.FromArgb(220, 220, 220),
             .AutoSize = True,
             .Location = New Point(30, 60)
         }
@@ -75,8 +86,8 @@ Public Class DashboardUser
 
         ' Logout button on header
         Dim btnLogout As New Button() With {
-            .Text = "🚪 Logout",
-            .Font = New Font("Segoe UI", 10, FontStyle.Regular),
+            .Text = "Logout",
+            .Font = New Font("Segoe UI", 10, FontStyle.Bold),
             .Size = New Size(120, 40),
             .Location = New Point(Me.ClientSize.Width - 150, 30),
             .BackColor = Color.FromArgb(231, 76, 60),
@@ -90,266 +101,154 @@ Public Class DashboardUser
 
         ' Main Content Panel
         Dim contentPanel As New Panel() With {
-            .Location = New Point(0, 100),
-            .Size = New Size(Me.ClientSize.Width, Me.ClientSize.Height - 100),
-            .BackColor = Color.FromArgb(236, 240, 241),
-            .AutoScroll = True
+            .Dock = DockStyle.Fill,
+            .BackColor = Color.FromArgb(245, 247, 250),
+            .AutoScroll = True,
+            .Padding = New Padding(30)
         }
         Me.Controls.Add(contentPanel)
+        contentPanel.BringToFront()
 
         ' Title for menu
         Dim lblMenu As New Label() With {
-            .Text = "📋 Menu Utama",
-            .Font = New Font("Segoe UI", 14, FontStyle.Bold),
+            .Text = "Menu Utama",
+            .Font = New Font("Segoe UI", 16, FontStyle.Bold),
             .ForeColor = Color.FromArgb(44, 62, 80),
             .AutoSize = True,
-            .Location = New Point(30, 20)
+            .Location = New Point(30, 0)
         }
         contentPanel.Controls.Add(lblMenu)
 
-        ' Menu Cards Container
-        Dim yPosition As Integer = 70
-        Dim xPosition As Integer = 30
-        Dim cardWidth As Integer = 250
-        Dim cardHeight As Integer = 180
-        Dim spacing As Integer = 30
+        ' Cards FlowLayoutPanel
+        Dim flowPanel As New FlowLayoutPanel() With {
+            .Dock = DockStyle.Fill,
+            .Location = New Point(30, 50),
+            .AutoScroll = True,
+            .FlowDirection = FlowDirection.LeftToRight,
+            .WrapContents = True
+        }
+        contentPanel.Controls.Add(flowPanel)
+        flowPanel.BringToFront()
 
-        ' Card 1: Tes Minat Bakat
-        Dim card1 As New Panel() With {
-            .Location = New Point(xPosition, yPosition),
-            .Size = New Size(cardWidth, cardHeight),
-            .BackColor = Color.White,
-            .BorderStyle = BorderStyle.FixedSingle,
+        ' Create cards
+        Dim card1 = CreateMenuCard("Tes Minat Bakat", "Ikuti tes untuk mengetahui minat dan bakat Anda", "📋", AddressOf Card1_Click)
+        Dim card2 = CreateMenuCard("Lihat Hasil Tes", "Lihat hasil tes minat bakat yang sudah Anda ikuti", "📊", AddressOf Card2_Click)
+        Dim card3 = CreateMenuCard("Generate Topik", "Dapatkan rekomendasi topik skripsi sesuai minat Anda", "📝", AddressOf Card3_Click)
+        Dim card4 = CreateMenuCard("Ubah Password", "Ganti password akun Anda untuk keamanan", "🔐", AddressOf Card4_Click)
+        Dim card5 = CreateMenuCard("Profile Saya", "Lihat dan kelola informasi profile Anda", "👤", AddressOf Card5_Click)
+
+        flowPanel.Controls.Add(card1)
+        flowPanel.Controls.Add(card2)
+        flowPanel.Controls.Add(card3)
+        flowPanel.Controls.Add(card4)
+        flowPanel.Controls.Add(card5)
+    End Sub
+
+    Private Function CreateMenuCard(title As String, description As String, icon As String, clickHandler As EventHandler) As Panel
+        Dim card As New Panel() With {
+            .Size = New Size(280, 180),
+            .BackColor = cardDefaultColor,
+            .Margin = New Padding(15),
             .Cursor = Cursors.Hand
         }
-        contentPanel.Controls.Add(card1)
 
-        Dim icon1 As New Label() With {
-            .Text = "📋",
-            .Font = New Font("Segoe UI", 48, FontStyle.Regular),
-            .AutoSize = True,
-            .Location = New Point((cardWidth - 60) \ 2, 20)
+        Dim pnlBorder As New Panel() With {.BackColor = Color.LightGray, .Dock = DockStyle.Bottom, .Height = 1}
+        card.Controls.Add(pnlBorder)
+
+        Dim iconLabel As New Label() With {
+            .Text = icon,
+            .Font = New Font("Segoe UI Emoji", 28, FontStyle.Regular),
+            .AutoSize = False,
+            .Size = New Size(card.Width, 60),
+            .TextAlign = ContentAlignment.MiddleCenter,
+            .Location = New Point(0, 20)
         }
-        card1.Controls.Add(icon1)
+        card.Controls.Add(iconLabel)
 
-        Dim title1 As New Label() With {
-            .Text = "Tes Minat Bakat",
+        Dim titleLabel As New Label() With {
+            .Text = title,
             .Font = New Font("Segoe UI", 12, FontStyle.Bold),
             .ForeColor = Color.FromArgb(44, 62, 80),
             .AutoSize = False,
             .TextAlign = ContentAlignment.MiddleCenter,
-            .Size = New Size(cardWidth - 20, 25),
-            .Location = New Point(10, 90)
+            .Size = New Size(card.Width, 30),
+            .Location = New Point(0, 85)
         }
-        card1.Controls.Add(title1)
+        card.Controls.Add(titleLabel)
 
-        Dim desc1 As New Label() With {
-            .Text = "Ikuti tes untuk mengetahui minat dan bakat Anda",
+        Dim descLabel As New Label() With {
+            .Text = description,
             .Font = New Font("Segoe UI", 9, FontStyle.Regular),
             .ForeColor = Color.FromArgb(127, 140, 141),
             .AutoSize = False,
             .TextAlign = ContentAlignment.TopCenter,
-            .Size = New Size(cardWidth - 20, 50),
+            .Size = New Size(card.Width - 20, 50),
             .Location = New Point(10, 120)
         }
-        card1.Controls.Add(desc1)
+        card.Controls.Add(descLabel)
 
-        AddHandler card1.Click, AddressOf Card1_Click
-        AddHandler icon1.Click, AddressOf Card1_Click
-        AddHandler title1.Click, AddressOf Card1_Click
-        AddHandler desc1.Click, AddressOf Card1_Click
+        ' Add handlers to all controls
+        For Each ctrl As Control In card.Controls
+            AddHandler ctrl.Click, clickHandler
+            AddHandler ctrl.MouseEnter, AddressOf Card_MouseEnter
+            AddHandler ctrl.MouseLeave, AddressOf Card_MouseLeave
+        Next
+        AddHandler card.Click, clickHandler
+        AddHandler card.MouseEnter, AddressOf Card_MouseEnter
+        AddHandler card.MouseLeave, AddressOf Card_MouseLeave
 
-        ' Card 2: Lihat Hasil Tes
-        xPosition += cardWidth + spacing
-        Dim card2 As New Panel() With {
-            .Location = New Point(xPosition, yPosition),
-            .Size = New Size(cardWidth, cardHeight),
-            .BackColor = Color.White,
-            .BorderStyle = BorderStyle.FixedSingle,
-            .Cursor = Cursors.Hand
-        }
-        contentPanel.Controls.Add(card2)
+        Return card
+    End Function
 
-        Dim icon2 As New Label() With {
-            .Text = "📊",
-            .Font = New Font("Segoe UI", 48, FontStyle.Regular),
-            .AutoSize = True,
-            .Location = New Point((cardWidth - 60) \ 2, 20)
-        }
-        card2.Controls.Add(icon2)
+    Private Sub Card_MouseEnter(sender As Object, e As EventArgs)
+        Dim ctrl = CType(sender, Control)
+        Dim card As Panel = If(TypeOf ctrl Is Panel, CType(ctrl, Panel), CType(ctrl.Parent, Panel))
+        card.BackColor = cardHoverColor
+    End Sub
 
-        Dim title2 As New Label() With {
-            .Text = "Lihat Hasil Tes",
-            .Font = New Font("Segoe UI", 12, FontStyle.Bold),
-            .ForeColor = Color.FromArgb(44, 62, 80),
-            .AutoSize = False,
-            .TextAlign = ContentAlignment.MiddleCenter,
-            .Size = New Size(cardWidth - 20, 25),
-            .Location = New Point(10, 90)
-        }
-        card2.Controls.Add(title2)
-
-        Dim desc2 As New Label() With {
-            .Text = "Lihat hasil tes minat bakat yang sudah Anda ikuti",
-            .Font = New Font("Segoe UI", 9, FontStyle.Regular),
-            .ForeColor = Color.FromArgb(127, 140, 141),
-            .AutoSize = False,
-            .TextAlign = ContentAlignment.TopCenter,
-            .Size = New Size(cardWidth - 20, 50),
-            .Location = New Point(10, 120)
-        }
-        card2.Controls.Add(desc2)
-
-        AddHandler card2.Click, AddressOf Card2_Click
-        AddHandler icon2.Click, AddressOf Card2_Click
-        AddHandler title2.Click, AddressOf Card2_Click
-        AddHandler desc2.Click, AddressOf Card2_Click
-
-        ' Card 3: Generate Topik
-        xPosition += cardWidth + spacing
-        Dim card3 As New Panel() With {
-            .Location = New Point(xPosition, yPosition),
-            .Size = New Size(cardWidth, cardHeight),
-            .BackColor = Color.White,
-            .BorderStyle = BorderStyle.FixedSingle,
-            .Cursor = Cursors.Hand
-        }
-        contentPanel.Controls.Add(card3)
-
-        Dim icon3 As New Label() With {
-            .Text = "📝",
-            .Font = New Font("Segoe UI", 48, FontStyle.Regular),
-            .AutoSize = True,
-            .Location = New Point((cardWidth - 60) \ 2, 20)
-        }
-        card3.Controls.Add(icon3)
-
-        Dim title3 As New Label() With {
-            .Text = "Generate Topik",
-            .Font = New Font("Segoe UI", 12, FontStyle.Bold),
-            .ForeColor = Color.FromArgb(44, 62, 80),
-            .AutoSize = False,
-            .TextAlign = ContentAlignment.MiddleCenter,
-            .Size = New Size(cardWidth - 20, 25),
-            .Location = New Point(10, 90)
-        }
-        card3.Controls.Add(title3)
-
-        Dim desc3 As New Label() With {
-            .Text = "Generate rekomendasi topik skripsi sesuai minat Anda",
-            .Font = New Font("Segoe UI", 9, FontStyle.Regular),
-            .ForeColor = Color.FromArgb(127, 140, 141),
-            .AutoSize = False,
-            .TextAlign = ContentAlignment.TopCenter,
-            .Size = New Size(cardWidth - 20, 50),
-            .Location = New Point(10, 120)
-        }
-        card3.Controls.Add(desc3)
-
-        AddHandler card3.Click, AddressOf Card3_Click
-        AddHandler icon3.Click, AddressOf Card3_Click
-        AddHandler title3.Click, AddressOf Card3_Click
-        AddHandler desc3.Click, AddressOf Card3_Click
-
-        ' Row 2
-        yPosition += cardHeight + spacing
-        xPosition = 30
-
-        ' Card 4: Change Password
-        Dim card4 As New Panel() With {
-            .Location = New Point(xPosition, yPosition),
-            .Size = New Size(cardWidth, cardHeight),
-            .BackColor = Color.White,
-            .BorderStyle = BorderStyle.FixedSingle,
-            .Cursor = Cursors.Hand
-        }
-        contentPanel.Controls.Add(card4)
-
-        Dim icon4 As New Label() With {
-            .Text = "🔐",
-            .Font = New Font("Segoe UI", 48, FontStyle.Regular),
-            .AutoSize = True,
-            .Location = New Point((cardWidth - 60) \ 2, 20)
-        }
-        card4.Controls.Add(icon4)
-
-        Dim title4 As New Label() With {
-            .Text = "Ubah Password",
-            .Font = New Font("Segoe UI", 12, FontStyle.Bold),
-            .ForeColor = Color.FromArgb(44, 62, 80),
-            .AutoSize = False,
-            .TextAlign = ContentAlignment.MiddleCenter,
-            .Size = New Size(cardWidth - 20, 25),
-            .Location = New Point(10, 90)
-        }
-        card4.Controls.Add(title4)
-
-        Dim desc4 As New Label() With {
-            .Text = "Ganti password akun Anda untuk keamanan",
-            .Font = New Font("Segoe UI", 9, FontStyle.Regular),
-            .ForeColor = Color.FromArgb(127, 140, 141),
-            .AutoSize = False,
-            .TextAlign = ContentAlignment.TopCenter,
-            .Size = New Size(cardWidth - 20, 50),
-            .Location = New Point(10, 120)
-        }
-        card4.Controls.Add(desc4)
-
-        AddHandler card4.Click, AddressOf Card4_Click
-        AddHandler icon4.Click, AddressOf Card4_Click
-        AddHandler title4.Click, AddressOf Card4_Click
-        AddHandler desc4.Click, AddressOf Card4_Click
-
-        ' Card 5: Profile (NEW)
-        xPosition += cardWidth + spacing
-        Dim card5 As New Panel() With {
-            .Location = New Point(xPosition, yPosition),
-            .Size = New Size(cardWidth, cardHeight),
-            .BackColor = Color.White,
-            .BorderStyle = BorderStyle.FixedSingle,
-            .Cursor = Cursors.Hand
-        }
-        contentPanel.Controls.Add(card5)
-
-        Dim icon5 As New Label() With {
-            .Text = "👤",
-            .Font = New Font("Segoe UI", 48, FontStyle.Regular),
-            .AutoSize = True,
-            .Location = New Point((cardWidth - 60) \ 2, 20)
-        }
-        card5.Controls.Add(icon5)
-
-        Dim title5 As New Label() With {
-            .Text = "Profile Saya",
-            .Font = New Font("Segoe UI", 12, FontStyle.Bold),
-            .ForeColor = Color.FromArgb(44, 62, 80),
-            .AutoSize = False,
-            .TextAlign = ContentAlignment.MiddleCenter,
-            .Size = New Size(cardWidth - 20, 25),
-            .Location = New Point(10, 90)
-        }
-        card5.Controls.Add(title5)
-
-        Dim desc5 As New Label() With {
-            .Text = "Lihat dan kelola informasi profile Anda",
-            .Font = New Font("Segoe UI", 9, FontStyle.Regular),
-            .ForeColor = Color.FromArgb(127, 140, 141),
-            .AutoSize = False,
-            .TextAlign = ContentAlignment.TopCenter,
-            .Size = New Size(cardWidth - 20, 50),
-            .Location = New Point(10, 120)
-        }
-        card5.Controls.Add(desc5)
-
-        AddHandler card5.Click, AddressOf Card5_Click
-        AddHandler icon5.Click, AddressOf Card5_Click
-        AddHandler title5.Click, AddressOf Card5_Click
-        AddHandler desc5.Click, AddressOf Card5_Click
+    Private Sub Card_MouseLeave(sender As Object, e As EventArgs)
+        Dim ctrl = CType(sender, Control)
+        Dim card As Panel = If(TypeOf ctrl Is Panel, CType(ctrl, Panel), CType(ctrl.Parent, Panel))
+        card.BackColor = cardDefaultColor
     End Sub
 
     Private Sub Card1_Click(sender As Object, e As EventArgs)
         ' Tes Minat Bakat
-        Button1_Click(sender, e)
+        Try
+            Using conn As New MySqlConnection(ConnectionString)
+                conn.Open()
+                Dim query As String = "SELECT COUNT(*) FROM tests WHERE user_id = @userId"
+                Using cmd As New MySqlCommand(query, conn)
+                    cmd.Parameters.AddWithValue("@userId", LoggedUserId)
+                    Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+                    If count > 0 Then
+                        Dim result As DialogResult = MessageBox.Show(
+                            "Anda sudah pernah mengikuti tes. Apakah ingin melihat hasil tes terakhir?" & vbCrLf & vbCrLf &
+                            "Klik YES untuk melihat hasil" & vbCrLf &
+                            "Klik NO untuk mengikuti tes lagi",
+                            "Tes Minat Bakat", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
+                        If result = DialogResult.Yes Then
+                            Dim hasilForm As New HasilTesMinatBakat()
+                            hasilForm.ParentDashboard = Me
+                            hasilForm.Show()
+                            Me.Hide()
+                        ElseIf result = DialogResult.No Then
+                            Dim tesForm As New TesMinatBakat()
+                            tesForm.ParentDashboard = Me
+                            tesForm.Show()
+                            Me.Hide()
+                        End If
+                    Else
+                        Dim tesForm As New TesMinatBakat()
+                        tesForm.ParentDashboard = Me
+                        tesForm.Show()
+                        Me.Hide()
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub Card2_Click(sender As Object, e As EventArgs)
@@ -357,12 +256,10 @@ Public Class DashboardUser
         Try
             Using conn As New MySqlConnection(ConnectionString)
                 conn.Open()
-                
                 Dim query As String = "SELECT COUNT(*) FROM tests WHERE user_id = @userId"
                 Using cmd As New MySqlCommand(query, conn)
                     cmd.Parameters.AddWithValue("@userId", LoggedUserId)
                     Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
-                    
                     If count > 0 Then
                         Dim hasilForm As New HasilTesMinatBakat()
                         hasilForm.ParentDashboard = Me
@@ -374,13 +271,34 @@ Public Class DashboardUser
                 End Using
             End Using
         Catch ex As Exception
-            MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
     Private Sub Card3_Click(sender As Object, e As EventArgs)
         ' Generate Topik
-        Button2_Click(sender, e)
+        Try
+            If String.IsNullOrEmpty(LoggedMinatBakat) Then
+                Dim result As DialogResult = MessageBox.Show(
+                    "Anda belum mengikuti Tes Minat Bakat." & vbCrLf &
+                    "Untuk hasil topik skripsi yang lebih akurat, disarankan untuk mengikuti tes terlebih dahulu." & vbCrLf & vbCrLf &
+                    "Apakah ingin mengikuti tes sekarang?",
+                    "Tes Minat Bakat Belum Dilakukan", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                If result = DialogResult.Yes Then
+                    Dim tesForm As New TesMinatBakat()
+                    tesForm.ParentDashboard = Me
+                    tesForm.Show()
+                    Me.Hide()
+                    Return
+                End If
+            End If
+            Dim generateForm As New GenerateTopikSkripsi()
+            generateForm.ParentDashboard = Me
+            generateForm.Show()
+            Me.Hide()
+        Catch ex As Exception
+            MessageBox.Show("Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub Card4_Click(sender As Object, e As EventArgs)
@@ -397,144 +315,40 @@ Public Class DashboardUser
         Me.Hide()
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs)
-        ' Tombol Tes Minat Bakat
-        Try
-            ' Cek apakah user sudah pernah tes
-            Using conn As New MySqlConnection(ConnectionString)
-                conn.Open()
-                
-                Dim query As String = "SELECT COUNT(*) FROM tests WHERE user_id = @userId"
-                Using cmd As New MySqlCommand(query, conn)
-                    cmd.Parameters.AddWithValue("@userId", LoggedUserId)
-                    Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
-                    
-                    If count > 0 Then
-                        ' User sudah pernah tes, tanya mau lihat hasil atau tes ulang
-                        Dim result As DialogResult = MessageBox.Show(
-                            "Anda sudah pernah mengikuti tes. Apakah ingin melihat hasil tes terakhir?" & vbCrLf & vbCrLf &
-                            "Klik YES untuk melihat hasil" & vbCrLf &
-                            "Klik NO untuk mengikuti tes lagi",
-                            "Tes Minat Bakat",
-                            MessageBoxButtons.YesNoCancel,
-                            MessageBoxIcon.Question)
-                        
-                        If result = DialogResult.Yes Then
-                            ' Tampilkan hasil tes terakhir
-                            Dim hasilForm As New HasilTesMinatBakat()
-                            hasilForm.ParentDashboard = Me
-                            hasilForm.Show()
-                            Me.Hide()
-                        ElseIf result = DialogResult.No Then
-                            ' Ikuti tes lagi
-                            Dim tesForm As New TesMinatBakat()
-                            tesForm.ParentDashboard = Me
-                            tesForm.Show()
-                            Me.Hide()
-                        End If
-                    Else
-                        ' User belum pernah tes, langsung ke form tes
-                        Dim tesForm As New TesMinatBakat()
-                        tesForm.ParentDashboard = Me
-                        tesForm.Show()
-                        Me.Hide()
-                    End If
-                End Using
-            End Using
-        Catch ex As Exception
-            MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-    Private Sub Button2_Click(sender As Object, e As EventArgs)
-        ' Tombol Generate Topik Skripsi
-        Try
-            ' Cek apakah user sudah pernah tes minat bakat
-            If String.IsNullOrEmpty(LoggedMinatBakat) Then
-                Dim result As DialogResult = MessageBox.Show(
-                    "Anda belum mengikuti Tes Minat Bakat." & vbCrLf &
-                    "Untuk hasil topik skripsi yang lebih akurat, disarankan untuk mengikuti tes terlebih dahulu." & vbCrLf & vbCrLf &
-                    "Apakah ingin mengikuti tes sekarang?",
-                    "Tes Minat Bakat Belum Dilakukan",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question)
-                
-                If result = DialogResult.Yes Then
-                    ' Redirect ke tes minat bakat
-                    Dim tesForm As New TesMinatBakat()
-                    tesForm.ParentDashboard = Me
-                    tesForm.Show()
-                    Me.Hide()
-                    Return
-                End If
-            End If
-            
-            ' Lanjut ke Generate Topik Skripsi
-            Dim generateForm As New GenerateTopikSkripsi()
-            generateForm.ParentDashboard = Me
-            generateForm.Show()
-            Me.Hide()
-            
-        Catch ex As Exception
-            MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
     Private Sub ButtonLogout_Click(sender As Object, e As EventArgs)
         ' Konfirmasi logout
         Dim result As DialogResult = MessageBox.Show(
             "Apakah Anda yakin ingin logout?",
-            "Konfirmasi Logout",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question)
-        
+            "Konfirmasi Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
-            ' Log activity
+            isLoggingOut = True
             Try
                 Using conn As New MySqlConnection(ConnectionString)
                     conn.Open()
                     Dim logQuery As String = "INSERT INTO activity_logs (user_id, aksi, detail, waktu) VALUES (@userId, 'Logout', @detail, NOW())"
                     Using logCmd As New MySqlCommand(logQuery, conn)
                         logCmd.Parameters.AddWithValue("@userId", LoggedUserId)
-                        logCmd.Parameters.AddWithValue("@detail", $"User {LoggedUsername} logout")
+                        logCmd.Parameters.AddWithValue("@detail", "User " & LoggedUsername & " logout")
                         logCmd.ExecuteNonQuery()
                     End Using
                 End Using
             Catch
-                ' Silent fail
             End Try
-            
-            ' Clear session
             ClearSession()
-            
-            ' Redirect ke landing page
-            Dim landingPage As New LandingPage()
-            landingPage.Show()
+            If ParentLanding IsNot Nothing AndAlso Not ParentLanding.IsDisposed Then
+                ParentLanding.Show()
+            Else
+                Dim lp As New LandingPage()
+                lp.Show()
+            End If
             Me.Close()
         End If
     End Sub
 
     Private Sub DashboardUser_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        ' Jika form di-close tapi session masih ada, berarti user close window tanpa logout
-        ' Tanya apakah ingin logout
-        If IsLoggedIn() Then
-            Dim result As DialogResult = MessageBox.Show(
-                "Apakah Anda ingin logout?",
-                "Konfirmasi",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question)
-            
-            If result = DialogResult.Yes Then
-                ' Logout
-                ClearSession()
-                
-                ' Tampilkan landing page
-                Dim landingPage As New LandingPage()
-                landingPage.Show()
-            Else
-                ' Cancel close
-                e.Cancel = True
-            End If
+        ' When the main dashboard form closes (by clicking X), exit the application
+        If Not isLoggingOut Then
+            Application.Exit()
         End If
     End Sub
 End Class

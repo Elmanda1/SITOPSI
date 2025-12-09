@@ -10,20 +10,25 @@ Namespace My
 
     ' **NEW** ApplyApplicationDefaults: Raised when the application queries default values to be set for the application.
 
-    ' Example:
-    ' Private Sub MyApplication_ApplyApplicationDefaults(sender As Object, e As ApplyApplicationDefaultsEventArgs) Handles Me.ApplyApplicationDefaults
-    '
-    '   ' Setting the application-wide default Font:
-    '   e.Font = New Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular)
-    '
-    '   ' Setting the HighDpiMode for the Application:
-    '   e.HighDpiMode = HighDpiMode.PerMonitorV2
-    '
-    '   ' If a splash dialog is used, this sets the minimum display time:
-    '   e.MinimumSplashScreenDisplayTime = 4000
-    ' End Sub
-
     Partial Friend Class MyApplication
+        ' NOTE: Application Framework events are disabled when using custom Startup module
+        ' These event handlers are no longer used with Startup.vb
+        
+        ' Private Sub MyApplication_Startup(sender As Object, e As StartupEventArgs) Handles Me.Startup
+        '     ' Set shutdown mode to only shutdown when last form closes
+        '     ' This ensures the application stays alive as long as there's at least one form open
+        ' End Sub
 
+        ' Private Sub MyApplication_UnhandledException(sender As Object, e As UnhandledExceptionEventArgs) Handles Me.UnhandledException
+        '     ' Log the exception
+        '     System.Diagnostics.Debug.WriteLine($"Unhandled Exception: {e.Exception.Message}")
+        '     System.Diagnostics.Debug.WriteLine($"StackTrace: {e.Exception.StackTrace}")
+        '     
+        '     MessageBox.Show($"Terjadi kesalahan yang tidak terduga:{vbCrLf}{vbCrLf}{e.Exception.Message}{vbCrLf}{vbCrLf}Aplikasi akan ditutup.", 
+        '                   "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        '     
+        '     ' Mark as handled to prevent app crash
+        '     e.ExitApplication = False
+        ' End Sub
     End Class
 End Namespace

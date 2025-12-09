@@ -1,17 +1,28 @@
 Imports MySql.Data.MySqlClient
+Imports System.Drawing.Drawing2D
+Imports System.Windows.Forms
 
 Public Class DashboardAdmin
+    Public Property ParentLanding As LandingPage
+    Private isLoggingOut As Boolean = False
+    Private ReadOnly cardHoverColor As Color = Color.FromArgb(240, 240, 240)
+    Private ReadOnly cardDefaultColor As Color = Color.White
+
     Private Sub DashboardAdmin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Not IsLoggedIn() Or Not IsAdmin() Then
             MessageBox.Show("Akses ditolak!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Dim loginForm As New LoginForm()
-            loginForm.Show()
+            If ParentLanding IsNot Nothing AndAlso Not ParentLanding.IsDisposed Then
+                ParentLanding.Show()
+            Else
+                Dim login As New LoginForm()
+                login.Show()
+            End If
             Me.Close()
             Return
         End If
 
         Me.StartPosition = FormStartPosition.CenterScreen
-        Me.BackColor = Color.FromArgb(236, 240, 241)
+        Me.BackColor = Color.FromArgb(245, 247, 250)
         Me.Size = New Size(1100, 700)
         Me.Text = "Dashboard Admin - SITOPSI"
         BuildUI()
@@ -19,30 +30,31 @@ Public Class DashboardAdmin
 
     Private Sub BuildUI()
         Me.Controls.Clear()
-        
+
         ' Header Panel
         Dim header As New Panel With {
             .Dock = DockStyle.Top,
             .Height = 100,
-            .BackColor = Color.FromArgb(231, 76, 60)
+            .BackColor = Color.FromArgb(44, 62, 80)
         }
-        
+        Me.Controls.Add(header)
+
         Dim lblTitle As New Label With {
-            .Text = $"?? Admin Dashboard - {LoggedFullName}",
+            .Text = "⚙️ Admin Dashboard - " & LoggedFullName,
             .Font = New Font("Segoe UI", 18, FontStyle.Bold),
             .ForeColor = Color.White,
             .AutoSize = True,
             .Location = New Point(30, 30)
         }
         header.Controls.Add(lblTitle)
-        
+
         ' Logout Button
         Dim btnLogout As New Button() With {
-            .Text = "?? Logout",
-            .Font = New Font("Segoe UI", 10, FontStyle.Regular),
+            .Text = "Logout",
+            .Font = New Font("Segoe UI", 10, FontStyle.Bold),
             .Size = New Size(120, 40),
             .Location = New Point(Me.ClientSize.Width - 150, 30),
-            .BackColor = Color.FromArgb(52, 73, 94),
+            .BackColor = Color.FromArgb(231, 76, 60),
             .ForeColor = Color.White,
             .FlatStyle = FlatStyle.Flat,
             .Cursor = Cursors.Hand
@@ -50,170 +62,202 @@ Public Class DashboardAdmin
         btnLogout.FlatAppearance.BorderSize = 0
         AddHandler btnLogout.Click, AddressOf ButtonLogout_Click
         header.Controls.Add(btnLogout)
-        
-        Me.Controls.Add(header)
 
         ' Content Panel
         Dim content As New Panel With {
-            .Location = New Point(0, 100),
-            .Size = New Size(Me.ClientSize.Width, Me.ClientSize.Height - 100),
-            .BackColor = Color.FromArgb(236, 240, 241),
-            .AutoScroll = True
+            .Dock = DockStyle.Fill,
+            .BackColor = Color.FromArgb(245, 247, 250),
+            .Padding = New Padding(30)
         }
-        
+        Me.Controls.Add(content)
+        content.BringToFront()
+
         ' Menu Title
         Dim lblMenu As New Label With {
-            .Text = "?? Menu Manajemen",
-            .Font = New Font("Segoe UI", 14, FontStyle.Bold),
+            .Text = "Menu Manajemen",
+            .Font = New Font("Segoe UI", 16, FontStyle.Bold),
             .ForeColor = Color.FromArgb(44, 62, 80),
             .AutoSize = True,
-            .Location = New Point(30, 20)
+            .Location = New Point(30, 0)
         }
         content.Controls.Add(lblMenu)
-        
-        ' Row 1 Cards
-        AddCard(content, "??", "User Management", "Kelola data pengguna", 30, 70, AddressOf Card1Click)
-        AddCard(content, "?", "Questions", "Kelola pertanyaan tes", 310, 70, AddressOf Card2Click)
-        AddCard(content, "??", "Rules/Kategori", "Kelola kategori/rules", 590, 70, AddressOf Card5Click)
-        
-        ' Row 2 Cards
-        AddCard(content, "??", "Activity Logs", "Lihat log aktivitas", 30, 280, AddressOf Card3Click)
-        
-        Me.Controls.Add(content)
+
+        ' FlowLayoutPanel for cards
+        Dim flowPanel As New FlowLayoutPanel With {
+            .Dock = DockStyle.Fill,
+            .Location = New Point(30, 50),
+            .AutoScroll = True,
+            .FlowDirection = FlowDirection.LeftToRight,
+            .WrapContents = True
+        }
+        content.Controls.Add(flowPanel)
+        flowPanel.BringToFront()
+
+        ' Add Cards
+        flowPanel.Controls.Add(CreateMenuCard("👤", "User Management", "Kelola data pengguna", AddressOf Card1Click))
+        flowPanel.Controls.Add(CreateMenuCard("📄", "Manajemen Pertanyaan", "Kelola pertanyaan dan statement CF", AddressOf Card2Click))
+        flowPanel.Controls.Add(CreateMenuCard("🏷️", "Rules", "Kelola rules (Gejala)", AddressOf Card4Click))
+        flowPanel.Controls.Add(CreateMenuCard("🔗", "Rules Combination", "Kelola kombinasi rules", AddressOf Card5Click))
+        flowPanel.Controls.Add(CreateMenuCard("📚", "Topics Management", "Kelola topik skripsi", AddressOf Card6Click))
+        flowPanel.Controls.Add(CreateMenuCard("📜", "Activity Logs", "Lihat log aktivitas", AddressOf Card3Click))
     End Sub
 
-    Private Sub AddCard(parent As Panel, icon As String, title As String, description As String, x As Integer, y As Integer, handler As EventHandler)
+    Private Function CreateMenuCard(icon As String, title As String, description As String, handler As EventHandler) As Panel
         Dim card As New Panel With {
-            .Location = New Point(x, y),
-            .Size = New Size(250, 180),
-            .BackColor = Color.White,
-            .BorderStyle = BorderStyle.FixedSingle,
+            .Size = New Size(280, 180),
+            .BackColor = cardDefaultColor,
+            .Margin = New Padding(15),
             .Cursor = Cursors.Hand
         }
-        
-        ' Icon
+
+        Dim pnlBorder As New Panel() With {.BackColor = Color.LightGray, .Dock = DockStyle.Bottom, .Height = 1}
+        card.Controls.Add(pnlBorder)
+
         Dim lblIcon As New Label With {
             .Text = icon,
-            .Font = New Font("Segoe UI", 48),
-            .AutoSize = True,
-            .Location = New Point((card.Width - 60) \ 2, 20)
+            .Font = New Font("Segoe UI Emoji", 28, FontStyle.Regular), ' Reduced icon size
+            .AutoSize = False,
+            .Size = New Size(card.Width, 60),
+            .TextAlign = ContentAlignment.MiddleCenter,
+            .Location = New Point(0, 20)
         }
         card.Controls.Add(lblIcon)
-        
-        ' Title
+
         Dim lblTitle As New Label With {
             .Text = title,
             .Font = New Font("Segoe UI", 12, FontStyle.Bold),
             .ForeColor = Color.FromArgb(44, 62, 80),
             .AutoSize = False,
             .TextAlign = ContentAlignment.MiddleCenter,
-            .Size = New Size(230, 25),
-            .Location = New Point(10, 90)
+            .Size = New Size(card.Width, 30),
+            .Location = New Point(0, 85)
         }
         card.Controls.Add(lblTitle)
-        
-        ' Description
+
         Dim lblDesc As New Label With {
             .Text = description,
             .Font = New Font("Segoe UI", 9, FontStyle.Regular),
             .ForeColor = Color.FromArgb(127, 140, 141),
             .AutoSize = False,
             .TextAlign = ContentAlignment.TopCenter,
-            .Size = New Size(230, 50),
+            .Size = New Size(card.Width - 20, 50),
             .Location = New Point(10, 120)
         }
         card.Controls.Add(lblDesc)
-        
+
+        For Each ctrl As Control In card.Controls
+            AddHandler ctrl.Click, handler
+            AddHandler ctrl.MouseEnter, AddressOf Card_MouseEnter
+            AddHandler ctrl.MouseLeave, AddressOf Card_MouseLeave
+        Next
         AddHandler card.Click, handler
-        AddHandler lblIcon.Click, handler
-        AddHandler lblTitle.Click, handler
-        AddHandler lblDesc.Click, handler
-        
-        parent.Controls.Add(card)
+        AddHandler card.MouseEnter, AddressOf Card_MouseEnter
+        AddHandler card.MouseLeave, AddressOf Card_MouseLeave
+
+        Return card
+    End Function
+
+    Private Sub Card_MouseEnter(sender As Object, e As EventArgs)
+        Dim ctrl = CType(sender, Control)
+        Dim card As Panel = If(TypeOf ctrl Is Panel, CType(ctrl, Panel), CType(ctrl.Parent, Panel))
+        card.BackColor = cardHoverColor
+    End Sub
+
+    Private Sub Card_MouseLeave(sender As Object, e As EventArgs)
+        Dim ctrl = CType(sender, Control)
+        Dim card As Panel = If(TypeOf ctrl Is Panel, CType(ctrl, Panel), CType(ctrl.Parent, Panel))
+        card.BackColor = cardDefaultColor
     End Sub
 
     Private Sub Card1Click(s As Object, e As EventArgs)
-        ' User Management
         Dim userManagementForm As New UserManagementForm()
-        userManagementForm.ParentDashboard = Me
+        userManagementForm.ParentDashboardAdmin = Me
         userManagementForm.Show()
         Me.Hide()
     End Sub
 
-    Private Sub Card2Click(s As Object, e As EventArgs)
-        ' Question Management
-        Dim questionManagementForm As New QuestionManagementForm()
-        questionManagementForm.ParentDashboard = Me
-        questionManagementForm.Show()
-        Me.Hide()
-    End Sub
-
     Private Sub Card3Click(s As Object, e As EventArgs)
-        ' Activity Logs
         Dim activityLogForm As New ActivityLogForm()
-        activityLogForm.ParentDashboard = Me
+        activityLogForm.ParentDashboardAdmin = Me
         activityLogForm.Show()
         Me.Hide()
     End Sub
     
-    Private Sub Card5Click(s As Object, e As EventArgs)
-        ' Rules Management
+    Private Sub Card4Click(s As Object, e As EventArgs)
         Dim rulesManagementForm As New RulesManagementForm()
-        rulesManagementForm.ParentDashboard = Me
+        rulesManagementForm.ParentDashboardAdmin = Me
         rulesManagementForm.Show()
+        Me.Hide()
+    End Sub
+    
+    Private Sub Card5Click(s As Object, e As EventArgs)
+        Dim rulesCombinationForm As New RulesCombinationManagementForm()
+        rulesCombinationForm.ParentDashboardAdmin = Me
+        rulesCombinationForm.Show()
+        Me.Hide()
+    End Sub
+    
+    Private Sub Card6Click(s As Object, e As EventArgs)
+        Dim topicManagementForm As New TopicManagementForm()
+        topicManagementForm.ParentDashboardAdmin = Me
+        topicManagementForm.Show()
+        Me.Hide()
+    End Sub
+
+    Private Sub Card2Click(s As Object, e As EventArgs)
+        Dim questionCFForm As New QuestionCFManagementForm()
+        questionCFForm.ParentDashboardAdmin = Me
+        questionCFForm.Show()
         Me.Hide()
     End Sub
 
     Private Sub ButtonLogout_Click(sender As Object, e As EventArgs)
-        ' Konfirmasi logout
         Dim result As DialogResult = MessageBox.Show(
             "Apakah Anda yakin ingin logout?",
-            "Konfirmasi Logout",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question)
+            "Konfirmasi Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         
         If result = DialogResult.Yes Then
-            ' Log activity
+            isLoggingOut = True
             Try
                 Using conn As New MySqlConnection(ConnectionString)
                     conn.Open()
                     Dim logQuery As String = "INSERT INTO activity_logs (user_id, aksi, detail, waktu) VALUES (@userId, 'Logout', @detail, NOW())"
                     Using logCmd As New MySqlCommand(logQuery, conn)
                         logCmd.Parameters.AddWithValue("@userId", LoggedUserId)
-                        logCmd.Parameters.AddWithValue("@detail", $"Admin {LoggedUsername} logout")
+                        logCmd.Parameters.AddWithValue("@detail", "Admin " & LoggedUsername & " logout")
                         logCmd.ExecuteNonQuery()
                     End Using
                 End Using
             Catch
-                ' Silent fail
             End Try
             
-            ' Clear session
             ClearSession()
             
-            ' Redirect ke landing page
-            Dim landingPage As New LandingPage()
-            landingPage.Show()
+            If ParentLanding IsNot Nothing AndAlso Not ParentLanding.IsDisposed Then
+                ParentLanding.Show()
+            Else
+                Dim lp As New LandingPage()
+                lp.Show()
+            End If
             Me.Close()
         End If
     End Sub
 
     Private Sub DashboardAdmin_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        ' Jika form di-close tapi session masih ada, tanya logout
-        If IsLoggedIn() Then
+        If Not isLoggingOut Then
+            ' User menutup form dengan X button
             Dim result As DialogResult = MessageBox.Show(
-                "Apakah Anda ingin logout?",
-                "Konfirmasi",
+                "Apakah Anda yakin ingin keluar dari aplikasi?",
+                "Konfirmasi Keluar",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question)
             
-            If result = DialogResult.Yes Then
-                ClearSession()
-                Dim landingPage As New LandingPage()
-                landingPage.Show()
+            If result = DialogResult.No Then
+                e.Cancel = True ' Cancel form closing
             Else
-                e.Cancel = True
+                Application.Exit() ' Close app completely
             End If
         End If
+        ' Jika isLoggingOut = True, biarkan form close normally (akan ke LandingPage)
     End Sub
 End Class

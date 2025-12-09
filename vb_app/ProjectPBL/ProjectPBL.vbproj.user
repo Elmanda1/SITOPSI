@@ -31,16 +31,31 @@
     <Compile Update="ProfileForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="QuestionManagementForm.vb">
+    <Compile Update="QuestionCFManagementForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="RegisterForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="RoundedButton.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="RoundedPanel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="RoundedTextBox.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="RulesCombinationManagementForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="RulesManagementForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="TesMinatBakat.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="TopicManagementForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UserManagementForm.vb">
