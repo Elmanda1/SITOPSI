@@ -1,7 +1,14 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 
 Public Class RegisterForm
+    Public Property ParentLanding As LandingPage
     Private isRegistrationSuccess As Boolean = False
+
+    ' --- Colors ---
+    Private ReadOnly navyColor As Color = Color.FromArgb(12, 45, 72)
+    Private ReadOnly lightNavyColor As Color = Color.FromArgb(28, 68, 105)
+    Private ReadOnly whiteColor As Color = Color.White
+    Private ReadOnly lightGreyHoverColor As Color = Color.FromArgb(236, 240, 241)
 
     Private Sub RegisterForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Center form
@@ -10,40 +17,11 @@ Public Class RegisterForm
         ' Set default radio button
         RadioButton1.Checked = True
 
-        ' Set password character untuk TextBox5
-        TextBox5.PasswordChar = "●"c
-
-        ' Load logo SITOPSI kiri
-        Try
-            Dim logoPath As String = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logobg.jpg")
-            If System.IO.File.Exists(logoPath) Then
-                PictureBox1.Image = Image.FromFile(logoPath)
-            Else
-                ' Try PNG version
-                logoPath = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logo.png")
-                If System.IO.File.Exists(logoPath) Then
-                    PictureBox1.Image = Image.FromFile(logoPath)
-                End If
-            End If
-        Catch ex As Exception
-            ' Silent fail - logo tidak ditemukan
-        End Try
-
-        ' Load logo PNJ kanan
-        Try
-            Dim pnjPath As String = System.IO.Path.Combine(Application.StartupPath, "..\..\..\Logo_Politeknik_Negeri_Jakarta.jpg")
-            If System.IO.File.Exists(pnjPath) Then
-                PictureBox2.Image = Image.FromFile(pnjPath)
-            Else
-                ' Try PNG version
-                pnjPath = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logo_pnj.png")
-                If System.IO.File.Exists(pnjPath) Then
-                    PictureBox2.Image = Image.FromFile(pnjPath)
-                End If
-            End If
-        Catch ex As Exception
-            ' Silent fail - logo tidak ditemukan
-        End Try
+        ' Add hover effects
+        AddHandler Button1.MouseEnter, AddressOf Button1_MouseEnter
+        AddHandler Button1.MouseLeave, AddressOf Button1_MouseLeave
+        AddHandler Button2.MouseEnter, AddressOf Button2_MouseEnter
+        AddHandler Button2.MouseLeave, AddressOf Button2_MouseLeave
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -146,15 +124,16 @@ Public Class RegisterForm
                     If result > 0 Then
                         isRegistrationSuccess = True
 
-                        MessageBox.Show($"Registrasi berhasil!" & vbCrLf & vbCrLf &
-                                      $"Username: {TextBox4.Text.Trim()}" & vbCrLf &
+                        MessageBox.Show("Registrasi berhasil!" & vbCrLf & vbCrLf &
+                                      "Username: " & TextBox4.Text.Trim() & vbCrLf &
                                       "Silakan login dengan akun Anda!",
                                       "Registrasi Berhasil", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                         ' Langsung ke login form
                         Dim loginForm As New LoginForm()
-                        loginForm.Show()
+                        loginForm.ParentLanding = ParentLanding ' Pass the original landing page
                         Me.Close()
+                        loginForm.Show()
                     Else
                         MessageBox.Show("Registrasi gagal! Silakan coba lagi.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     End If
@@ -162,16 +141,20 @@ Public Class RegisterForm
             End Using
 
         Catch ex As MySqlException
-            MessageBox.Show($"Error database: {ex.Message}", "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error database: " & ex.Message, "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Catch ex As Exception
-            MessageBox.Show($"Terjadi kesalahan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Terjadi kesalahan: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         ' Kembali ke landing page
-        Dim landingPage As New LandingPage()
-        landingPage.Show()
+        If ParentLanding IsNot Nothing Then
+            ParentLanding.Show()
+        Else
+            Dim landingPage As New LandingPage()
+            landingPage.Show()
+        End If
         Me.Close()
     End Sub
 
@@ -180,10 +163,27 @@ Public Class RegisterForm
     End Sub
 
     Private Sub RegisterForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        ' Hanya tampilkan landing page jika tidak berhasil register
         If Not isRegistrationSuccess Then
-            Dim landingPage As New LandingPage()
-            landingPage.Show()
+            If ParentLanding IsNot Nothing Then
+                ParentLanding.Show()
+            End If
         End If
+    End Sub
+
+    ' --- Hover Handlers ---
+    Private Sub Button1_MouseEnter(sender As Object, e As EventArgs) Handles Button1.MouseEnter
+        Button1.BackColor = lightNavyColor
+    End Sub
+
+    Private Sub Button1_MouseLeave(sender As Object, e As EventArgs) Handles Button1.MouseLeave
+        Button1.BackColor = navyColor
+    End Sub
+
+    Private Sub Button2_MouseEnter(sender As Object, e As EventArgs) Handles Button2.MouseEnter
+        Button2.BackColor = lightGreyHoverColor
+    End Sub
+
+    Private Sub Button2_MouseLeave(sender As Object, e As EventArgs) Handles Button2.MouseLeave
+        Button2.BackColor = whiteColor
     End Sub
 End Class

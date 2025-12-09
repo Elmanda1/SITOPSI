@@ -1,60 +1,32 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
+Imports System.Drawing.Drawing2D
+Imports System.Windows.Forms
 
 Public Class LoginForm
     ' Reference ke parent form (Landing Page)
     Public Property ParentLanding As LandingPage
 
+    ' Colors from the palette
+    Private ReadOnly navyColor As Color = Color.FromArgb(12, 45, 72)
+    Private ReadOnly lightNavyColor As Color = Color.FromArgb(28, 68, 105)
+    Private ReadOnly whiteColor As Color = Color.White
+
     Private Sub LoginForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Set password character
-        TextBox2.PasswordChar = "●"c
-        
         ' Center form
         Me.StartPosition = FormStartPosition.CenterScreen
-
-        ' Load logo SITOPSI kiri
-        Try
-            Dim logoPath As String = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logobg.jpg")
-            If System.IO.File.Exists(logoPath) Then
-                PictureBox1.Image = Image.FromFile(logoPath)
-            Else
-                ' Try PNG version
-                logoPath = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logo.png")
-                If System.IO.File.Exists(logoPath) Then
-                    PictureBox1.Image = Image.FromFile(logoPath)
-                End If
-            End If
-        Catch ex As Exception
-            ' Silent fail - logo tidak ditemukan
-        End Try
-
-        ' Load logo PNJ kanan
-        Try
-            Dim pnjPath As String = System.IO.Path.Combine(Application.StartupPath, "..\..\..\Logo_Politeknik_Negeri_Jakarta.jpg")
-            If System.IO.File.Exists(pnjPath) Then
-                PictureBox2.Image = Image.FromFile(pnjPath)
-            Else
-                ' Try PNG version
-                pnjPath = System.IO.Path.Combine(Application.StartupPath, "..\..\..\logo_pnj.png")
-                If System.IO.File.Exists(pnjPath) Then
-                    PictureBox2.Image = Image.FromFile(pnjPath)
-                End If
-            End If
-        Catch ex As Exception
-            ' Silent fail - logo tidak ditemukan
-        End Try
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub loginButton_Click(sender As Object, e As EventArgs) Handles loginButton.Click
         ' Validasi input
-        If String.IsNullOrWhiteSpace(TextBox1.Text) Then
+        If String.IsNullOrWhiteSpace(usernameTextBox.Text) Then
             MessageBox.Show("Username tidak boleh kosong!", "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            TextBox1.Focus()
+            usernameTextBox.Focus()
             Return
         End If
 
-        If String.IsNullOrWhiteSpace(TextBox2.Text) Then
+        If String.IsNullOrWhiteSpace(passwordTextBox.Text) Then
             MessageBox.Show("Password tidak boleh kosong!", "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            TextBox2.Focus()
+            passwordTextBox.Focus()
             Return
         End If
 
@@ -64,20 +36,20 @@ Public Class LoginForm
                 conn.Open()
 
                 ' Query untuk get user data
-                Dim query As String = "SELECT u.id, u.fullname, u.username, u.password, u.email, u.no_hp, " &
+                Dim query As String = "SELECT u.user_id, u.fullname, u.username, u.password, u.email, u.no_hp, " &
                                       "u.role_id, r.name as role_name, u.minat_bakat, u.status " &
                                       "FROM users u " &
-                                      "INNER JOIN roles r ON u.role_id = r.id " &
+                                      "INNER JOIN roles r ON u.role_id = r.role_id " &
                                       "WHERE u.username = @username"
 
                 Using cmd As New MySqlCommand(query, conn)
-                    cmd.Parameters.AddWithValue("@username", TextBox1.Text.Trim())
+                    cmd.Parameters.AddWithValue("@username", usernameTextBox.Text.Trim())
 
                     Using reader As MySqlDataReader = cmd.ExecuteReader()
                         If reader.Read() Then
                             ' User ditemukan
                             Dim storedPassword As String = reader("password").ToString()
-                            Dim inputPassword As String = TextBox2.Text
+                            Dim inputPassword As String = passwordTextBox.Text
                             Dim userStatus As String = reader("status").ToString()
 
                             ' Cek status akun
@@ -89,27 +61,12 @@ Public Class LoginForm
                                 Return
                             End If
 
-                            ' Verifikasi password (untuk sementara direct comparison)
-                            ' Untuk production gunakan BCrypt
-                            Dim passwordMatch As Boolean = False
-                            
-                            ' Cek jika hash BCrypt dari PHP
-                            If storedPassword.StartsWith("$2y$") Or storedPassword.StartsWith("$2a$") Then
-                                ' Untuk admin default
-                                If TextBox1.Text.Trim() = "admin" And inputPassword = "admin123" Then
-                                    passwordMatch = True
-                                Else
-                                    MessageBox.Show("Password menggunakan enkripsi lama. Hubungi admin untuk reset password.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                                    Return
-                                End If
-                            Else
-                                ' Direct comparison untuk password plain atau yang sudah di-update
-                                passwordMatch = (inputPassword = storedPassword)
-                            End If
+                            ' Verifikasi password (Direct comparison)
+                            Dim passwordMatch As Boolean = (inputPassword = storedPassword)
 
                             If passwordMatch Then
                                 ' Set session
-                                LoggedUserId = Convert.ToInt32(reader("id"))
+                                LoggedUserId = Convert.ToInt32(reader("user_id"))
                                 LoggedUsername = reader("username").ToString()
                                 LoggedFullName = reader("fullname").ToString()
                                 LoggedEmail = reader("email").ToString()
@@ -121,7 +78,7 @@ Public Class LoginForm
                                 reader.Close()
 
                                 ' Update last login
-                                Dim updateQuery As String = "UPDATE users SET last_login = NOW() WHERE id = @userId"
+                                Dim updateQuery As String = "UPDATE users SET last_login = NOW() WHERE user_id = @userId"
                                 Using updateCmd As New MySqlCommand(updateQuery, conn)
                                     updateCmd.Parameters.AddWithValue("@userId", LoggedUserId)
                                     updateCmd.ExecuteNonQuery()
@@ -132,50 +89,48 @@ Public Class LoginForm
                                 Using logCmd As New MySqlCommand(logQuery, conn)
                                     logCmd.Parameters.AddWithValue("@userId", LoggedUserId)
                                     logCmd.Parameters.AddWithValue("@aksi", "Login")
-                                    logCmd.Parameters.AddWithValue("@detail", $"User {LoggedUsername} berhasil login")
+                                    logCmd.Parameters.AddWithValue("@detail", "User " & LoggedUsername & " berhasil login")
                                     logCmd.ExecuteNonQuery()
                                 End Using
 
-                                MessageBox.Show($"Selamat datang, {LoggedFullName}!", "Login Berhasil", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-                                ' Close parent landing page
-                                If ParentLanding IsNot Nothing Then
-                                    ParentLanding.Close()
-                                End If
-
+                                MessageBox.Show("Selamat datang, " & LoggedFullName & "!", "Login Berhasil", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                
                                 ' Redirect berdasarkan role
                                 If IsAdmin() Then
                                     Dim dashboardAdmin As New DashboardAdmin()
+                                    dashboardAdmin.ParentLanding = Me.ParentLanding
                                     dashboardAdmin.Show()
-                                    Me.Close()
                                 ElseIf IsMahasiswa() Then
                                     Dim dashboardUser As New DashboardUser()
+                                    dashboardUser.ParentLanding = Me.ParentLanding
                                     dashboardUser.Show()
-                                    Me.Close()
                                 End If
+
+                                Me.Close() ' Close this login form
+
                             Else
                                 MessageBox.Show("Username atau password salah!", "Login Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                                TextBox2.Clear()
-                                TextBox2.Focus()
+                                passwordTextBox.Clear()
+                                passwordTextBox.Focus()
                             End If
                         Else
                             ' User tidak ditemukan
                             MessageBox.Show("Username atau password salah!", "Login Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            TextBox2.Clear()
-                            TextBox1.Focus()
+                            passwordTextBox.Clear()
+                            usernameTextBox.Focus()
                         End If
                     End Using
                 End Using
             End Using
 
         Catch ex As MySqlException
-            MessageBox.Show($"Error koneksi database: {ex.Message}", "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error koneksi database: " & ex.Message, "Error Database", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Catch ex As Exception
-            MessageBox.Show($"Terjadi kesalahan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Terjadi kesalahan: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Private Sub backButton_Click(sender As Object, e As EventArgs) Handles backButton.Click
         ' Kembali ke landing page
         If ParentLanding IsNot Nothing Then
             ParentLanding.Show()
@@ -186,7 +141,7 @@ Public Class LoginForm
         Me.Close()
     End Sub
 
-    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
+    Private Sub forgotPasswordLink_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles forgotPasswordLink.LinkClicked
         ' Forgot Password - Buka form change password
         Dim changePasswordForm As New ChangePassword()
         changePasswordForm.ParentLogin = Me
@@ -194,32 +149,41 @@ Public Class LoginForm
         Me.Hide()
     End Sub
 
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-        ' Keep existing
-    End Sub
-
-    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
-        ' Keep existing
-    End Sub
-
-    Private Sub TextBox2_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox2.KeyPress
+    Private Sub passwordTextBox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles passwordTextBox.KeyPress
         ' Login dengan Enter
         If e.KeyChar = Convert.ToChar(Keys.Enter) Then
-            Button1.PerformClick()
+            loginButton.PerformClick()
             e.Handled = True
         End If
     End Sub
 
     Private Sub LoginForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        ' Hanya tampilkan landing page jika tidak ada dashboard yang terbuka
-        ' DAN session masih kosong (tidak login)
+        ' Hanya tampilkan landing page jika form ditutup tanpa berhasil login
         If Not IsLoggedIn() Then
-            If ParentLanding IsNot Nothing Then
+            If ParentLanding IsNot Nothing AndAlso Not ParentLanding.IsDisposed Then
                 ParentLanding.Show()
-            Else
+            ElseIf ParentLanding Is Nothing Then
                 Dim landingPage As New LandingPage()
                 landingPage.Show()
             End If
         End If
+    End Sub
+
+    ' --- UI Interaction Handlers ---
+
+    Private Sub loginButton_MouseEnter(sender As Object, e As EventArgs) Handles loginButton.MouseEnter
+        loginButton.BackColor = lightNavyColor
+    End Sub
+
+    Private Sub loginButton_MouseLeave(sender As Object, e As EventArgs) Handles loginButton.MouseLeave
+        loginButton.BackColor = navyColor
+    End Sub
+
+    Private Sub backButton_MouseEnter(sender As Object, e As EventArgs) Handles backButton.MouseEnter
+        backButton.BackColor = Color.FromArgb(236, 240, 241) ' Light grey
+    End Sub
+
+    Private Sub backButton_MouseLeave(sender As Object, e As EventArgs) Handles backButton.MouseLeave
+        backButton.BackColor = whiteColor
     End Sub
 End Class

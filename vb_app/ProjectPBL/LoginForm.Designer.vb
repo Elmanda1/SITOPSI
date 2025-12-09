@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class LoginForm
     Inherits System.Windows.Forms.Form
 
@@ -22,194 +22,191 @@ Partial Class LoginForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Panel1 = New Panel()
-        PictureBox2 = New PictureBox()
+        Dim navyColor As Color = Color.FromArgb(12, 45, 72)
+        Dim goldColor As Color = Color.FromArgb(242, 193, 59)
+
+        cardPanel = New Panel()
         PictureBox1 = New PictureBox()
-        Panel2 = New Panel()
-        Button2 = New Button()
-        Label4 = New Label()
-        TextBox2 = New TextBox()
-        Label3 = New Label()
-        Label2 = New Label()
-        TextBox1 = New TextBox()
-        Button1 = New Button()
-        Label1 = New Label()
-        Panel1.SuspendLayout()
-        CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
+        titleLabel = New Label()
+        usernameLabel = New Label()
+        passwordLabel = New Label()
+        forgotPasswordLink = New LinkLabel()
+        usernameTextBox = New TextBox()
+        passwordTextBox = New TextBox()
+        loginButton = New Button()
+        backButton = New Button()
+
+        cardPanel.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
-        Panel2.SuspendLayout()
         SuspendLayout()
-        ' 
-        ' Panel1
-        ' 
-        Panel1.BackColor = Color.FromArgb(CByte(41), CByte(128), CByte(185))
-        Panel1.Controls.Add(PictureBox2)
-        Panel1.Controls.Add(PictureBox1)
-        Panel1.Dock = DockStyle.Top
-        Panel1.Location = New Point(0, 0)
-        Panel1.Name = "Panel1"
-        Panel1.Size = New Size(900, 180)
-        Panel1.TabIndex = 0
-        ' 
-        ' PictureBox2
-        ' 
-        PictureBox2.BackColor = Color.Transparent
-        PictureBox2.Location = New Point(695, 12)
-        PictureBox2.Name = "PictureBox2"
-        PictureBox2.Size = New Size(180, 155)
-        PictureBox2.SizeMode = PictureBoxSizeMode.Zoom
-        PictureBox2.TabIndex = 1
-        PictureBox2.TabStop = False
-        ' 
-        ' PictureBox1
-        ' 
-        PictureBox1.BackColor = Color.Transparent
-        PictureBox1.Location = New Point(28, 12)
-        PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(180, 155)
-        PictureBox1.SizeMode = PictureBoxSizeMode.Zoom
-        PictureBox1.TabIndex = 0
-        PictureBox1.TabStop = False
-        ' 
-        ' Panel2
-        ' 
-        Panel2.BackColor = Color.WhiteSmoke
-        Panel2.Controls.Add(Button2)
-        Panel2.Controls.Add(Label4)
-        Panel2.Controls.Add(TextBox2)
-        Panel2.Controls.Add(Label3)
-        Panel2.Controls.Add(Label2)
-        Panel2.Controls.Add(TextBox1)
-        Panel2.Controls.Add(Button1)
-        Panel2.Controls.Add(Label1)
-        Panel2.Dock = DockStyle.Fill
-        Panel2.Location = New Point(0, 180)
-        Panel2.Name = "Panel2"
-        Panel2.Size = New Size(900, 420)
-        Panel2.TabIndex = 1
-        ' 
-        ' Button2
-        ' 
-        Button2.BackColor = Color.FromArgb(CByte(149), CByte(165), CByte(166))
-        Button2.Cursor = Cursors.Hand
-        Button2.FlatAppearance.BorderSize = 0
-        Button2.FlatStyle = FlatStyle.Flat
-        Button2.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
-        Button2.ForeColor = Color.White
-        Button2.Location = New Point(280, 340)
-        Button2.Name = "Button2"
-        Button2.Size = New Size(340, 50)
-        Button2.TabIndex = 7
-        Button2.Text = "⬅ Kembali ke Landing"
-        Button2.UseVisualStyleBackColor = False
-        ' 
-        ' Label4
-        ' 
-        Label4.AutoSize = True
-        Label4.Cursor = Cursors.Hand
-        Label4.Font = New Font("Segoe UI", 9.0F, FontStyle.Underline)
-        Label4.ForeColor = Color.FromArgb(CByte(52), CByte(152), CByte(219))
-        Label4.Location = New Point(280, 255)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(116, 20)
-        Label4.TabIndex = 6
-        Label4.Text = "Lupa Password?"
-        ' 
-        ' TextBox2
-        ' 
-        TextBox2.Font = New Font("Segoe UI", 12.0F)
-        TextBox2.Location = New Point(280, 210)
-        TextBox2.Name = "TextBox2"
-        TextBox2.Size = New Size(340, 34)
-        TextBox2.TabIndex = 5
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
-        Label3.ForeColor = Color.FromArgb(CByte(52), CByte(73), CByte(94))
-        Label3.Location = New Point(280, 180)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(93, 25)
-        Label3.TabIndex = 4
-        Label3.Text = "Password"
-        ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
-        Label2.ForeColor = Color.FromArgb(CByte(52), CByte(73), CByte(94))
-        Label2.Location = New Point(280, 100)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(99, 25)
-        Label2.TabIndex = 3
-        Label2.Text = "Username"
-        ' 
-        ' TextBox1
-        ' 
-        TextBox1.Font = New Font("Segoe UI", 12.0F)
-        TextBox1.Location = New Point(280, 130)
-        TextBox1.Name = "TextBox1"
-        TextBox1.Size = New Size(340, 34)
-        TextBox1.TabIndex = 2
-        ' 
-        ' Button1
-        ' 
-        Button1.BackColor = Color.FromArgb(CByte(52), CByte(152), CByte(219))
-        Button1.Cursor = Cursors.Hand
-        Button1.FlatAppearance.BorderSize = 0
-        Button1.FlatStyle = FlatStyle.Flat
-        Button1.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
-        Button1.ForeColor = Color.White
-        Button1.Location = New Point(280, 285)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(340, 50)
-        Button1.TabIndex = 1
-        Button1.Text = "🔐 Login"
-        Button1.UseVisualStyleBackColor = False
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 18.0F, FontStyle.Bold)
-        Label1.ForeColor = Color.FromArgb(CByte(52), CByte(73), CByte(94))
-        Label1.Location = New Point(340, 30)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(220, 41)
-        Label1.TabIndex = 0
-        Label1.Text = "Login ke Akun"
-        Label1.TextAlign = ContentAlignment.MiddleCenter
+
         ' 
         ' LoginForm
         ' 
         AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(900, 600)
-        Controls.Add(Panel2)
-        Controls.Add(Panel1)
+        BackColor = Color.FromArgb(240, 242, 245) ' Light Grey background
+        ClientSize = New Size(800, 600)
+        Controls.Add(cardPanel)
         FormBorderStyle = FormBorderStyle.FixedSingle
         MaximizeBox = False
         Name = "LoginForm"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "Login - SITOPSI"
-        Panel1.ResumeLayout(False)
-        CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
+        Text = "SITOPSI - Login"
+
+        ' 
+        ' cardPanel
+        ' 
+        cardPanel.BackColor = Color.White
+        cardPanel.BorderStyle = BorderStyle.FixedSingle
+        cardPanel.Location = New Point(200, 50)
+        cardPanel.Size = New Size(400, 500)
+        cardPanel.Controls.Add(PictureBox1)
+        cardPanel.Controls.Add(titleLabel)
+        cardPanel.Controls.Add(usernameLabel)
+        cardPanel.Controls.Add(passwordLabel)
+        cardPanel.Controls.Add(forgotPasswordLink)
+        cardPanel.Controls.Add(usernameTextBox)
+        cardPanel.Controls.Add(passwordTextBox)
+        cardPanel.Controls.Add(loginButton)
+        cardPanel.Controls.Add(backButton)
+
+        ' 
+        ' PictureBox1
+        ' 
+        PictureBox1.BackColor = Color.Transparent
+        PictureBox1.Image = System.Drawing.Image.FromFile("logo.png")
+        PictureBox1.Location = New Point(150, 25)
+        PictureBox1.Name = "PictureBox1"
+        PictureBox1.Size = New Size(100, 80)
+        PictureBox1.SizeMode = PictureBoxSizeMode.Zoom
+        PictureBox1.TabIndex = 0
+        PictureBox1.TabStop = False
+
+        ' 
+        ' titleLabel
+        ' 
+        titleLabel.BackColor = Color.Transparent
+        titleLabel.Font = New Font("Segoe UI", 18.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        titleLabel.ForeColor = navyColor
+        titleLabel.Location = New Point(0, 115)
+        titleLabel.Name = "titleLabel"
+        titleLabel.Size = New Size(400, 41)
+        titleLabel.TabIndex = 1
+        titleLabel.Text = "Login ke Akun"
+        titleLabel.TextAlign = ContentAlignment.MiddleCenter
+
+        ' 
+        ' usernameLabel
+        ' 
+        usernameLabel.AutoSize = True
+        usernameLabel.BackColor = Color.Transparent
+        usernameLabel.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
+        usernameLabel.ForeColor = navyColor
+        usernameLabel.Location = New Point(46, 180)
+        usernameLabel.Name = "usernameLabel"
+        usernameLabel.Size = New Size(97, 23)
+        usernameLabel.TabIndex = 2
+        usernameLabel.Text = "Username"
+
+        ' 
+        ' passwordLabel
+        ' 
+        passwordLabel.AutoSize = True
+        passwordLabel.BackColor = Color.Transparent
+        passwordLabel.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
+        passwordLabel.ForeColor = navyColor
+        passwordLabel.Location = New Point(46, 260)
+        passwordLabel.Name = "passwordLabel"
+        passwordLabel.Size = New Size(85, 23)
+        passwordLabel.TabIndex = 4
+        passwordLabel.Text = "Password"
+        
+        ' 
+        ' forgotPasswordLink
+        ' 
+        forgotPasswordLink.AutoSize = True
+        forgotPasswordLink.BackColor = Color.Transparent
+        forgotPasswordLink.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        forgotPasswordLink.Location = New Point(250, 435)
+        forgotPasswordLink.Name = "forgotPasswordLink"
+        forgotPasswordLink.Size = New Size(120, 20)
+        forgotPasswordLink.TabIndex = 8
+        forgotPasswordLink.TabStop = True
+        forgotPasswordLink.Text = "Lupa Password?"
+        forgotPasswordLink.LinkColor = navyColor
+        forgotPasswordLink.ActiveLinkColor = goldColor
+
+        ' 
+        ' usernameTextBox
+        ' 
+        usernameTextBox.BackColor = Color.White
+        usernameTextBox.ForeColor = Color.Black
+        usernameTextBox.Font = New Font("Segoe UI", 10.0F)
+        usernameTextBox.Location = New Point(50, 208)
+        usernameTextBox.Name = "usernameTextBox"
+        usernameTextBox.Size = New Size(300, 40)
+        usernameTextBox.TabIndex = 3
+        usernameTextBox.Text = ""
+
+        ' 
+        ' passwordTextBox
+        ' 
+        passwordTextBox.BackColor = Color.White
+        passwordTextBox.ForeColor = Color.Black
+        passwordTextBox.Font = New Font("Segoe UI", 10.0F)
+        passwordTextBox.Location = New Point(50, 288)
+        passwordTextBox.Name = "passwordTextBox"
+        passwordTextBox.Size = New Size(300, 40)
+        passwordTextBox.TabIndex = 5
+        passwordTextBox.PasswordChar = "●"c
+        passwordTextBox.Text = ""
+
+        ' 
+        ' loginButton
+        ' 
+        loginButton.BackColor = navyColor
+        loginButton.Cursor = Cursors.Hand
+        loginButton.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
+        loginButton.ForeColor = Color.White
+        loginButton.FlatStyle = FlatStyle.Flat
+        loginButton.FlatAppearance.BorderSize = 0
+        loginButton.Location = New Point(50, 355)
+        loginButton.Name = "loginButton"
+        loginButton.Size = New Size(300, 50)
+        loginButton.TabIndex = 6
+        loginButton.Text = "Login"
+
+        ' 
+        ' backButton
+        ' 
+        backButton.BackColor = Color.White
+        backButton.Cursor = Cursors.Hand
+        backButton.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
+        backButton.ForeColor = navyColor
+        backButton.FlatStyle = FlatStyle.Flat
+        backButton.FlatAppearance.BorderSize = 1
+        backButton.FlatAppearance.BorderColor = navyColor
+        backButton.Location = New Point(50, 425)
+        backButton.Name = "backButton"
+        backButton.Size = New Size(140, 40)
+        backButton.TabIndex = 7
+        backButton.Text = "Kembali"
+        
+        cardPanel.ResumeLayout(False)
+        cardPanel.PerformLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
-        Panel2.ResumeLayout(False)
-        Panel2.PerformLayout()
         ResumeLayout(False)
     End Sub
 
-    Friend WithEvents Panel1 As Panel
+    Friend WithEvents cardPanel As Panel
     Friend WithEvents PictureBox1 As PictureBox
-    Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents Panel2 As Panel
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Button1 As Button
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents Label2 As Label
-    Friend WithEvents Label3 As Label
-    Friend WithEvents TextBox2 As TextBox
-    Friend WithEvents Label4 As Label
-    Friend WithEvents Button2 As Button
+    Friend WithEvents titleLabel As Label
+    Friend WithEvents usernameLabel As Label
+    Friend WithEvents passwordLabel As Label
+    Friend WithEvents forgotPasswordLink As LinkLabel
+    Friend WithEvents usernameTextBox As TextBox
+    Friend WithEvents passwordTextBox As TextBox
+    Friend WithEvents loginButton As Button
+    Friend WithEvents backButton As Button
 End Class
