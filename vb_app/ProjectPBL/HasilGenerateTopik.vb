@@ -12,7 +12,8 @@ Public Class HasilGenerateTopik
         Public Property TopicTitle As String
         Public Property Description As String
         Public Property Category As String
-        Public Property Relevance As Decimal
+        Public Property TargetRole As String
+        Public Property Relevance As Double
         Public Property Rank As Integer
     End Class
 
@@ -52,8 +53,7 @@ Public Class HasilGenerateTopik
                 conn.Open()
 
                 ' Query untuk mendapatkan topik yang di-generate untuk user ini
-                ' (Jika ada tabel history generate topik)
-                Dim query As String = "SELECT t.id, t.judul, t.deskripsi, c.nama_category, 1.0 as relevance " &
+                Dim query As String = "SELECT t.id, t.judul, t.deskripsi, t.target_role, c.nama_category, 1.0 as relevance " &
                                      "FROM thesis_topics t " &
                                      "INNER JOIN categories c ON t.category_id = c.id " &
                                      "WHERE c.nama_category = @minatBakat " &
@@ -72,7 +72,8 @@ Public Class HasilGenerateTopik
                                 .TopicTitle = reader("judul").ToString(),
                                 .Description = reader("deskripsi").ToString(),
                                 .Category = reader("nama_category").ToString(),
-                                .Relevance = Convert.ToDecimal(reader("relevance")),
+                                .TargetRole = If(IsDBNull(reader("target_role")), "", reader("target_role").ToString()),
+                                .Relevance = Convert.ToDouble(reader("relevance")),
                                 .Rank = rank
                             }
                             topicResults.Add(topicResult)
@@ -106,7 +107,7 @@ Public Class HasilGenerateTopik
 
         ' Title Label
         Dim lblTitle As New Label() With {
-            .Text = $"Hasil Generate Topik Skripsi",
+            .Text = $"?? Hasil Generate Topik Skripsi",
             .Font = New Font("Segoe UI", 18, FontStyle.Bold),
             .ForeColor = Color.White,
             .AutoSize = True,
@@ -116,7 +117,7 @@ Public Class HasilGenerateTopik
 
         ' Subtitle Label
         Dim lblSubtitle As New Label() With {
-            .Text = $"Halo {LoggedFullName}, berikut adalah rekomendasi topik skripsi berdasarkan minat Anda di bidang {LoggedMinatBakat}",
+            .Text = $"Halo {LoggedFullName}, berikut adalah {topicResults.Count} rekomendasi topik skripsi yang cocok untuk Anda",
             .Font = New Font("Segoe UI", 11, FontStyle.Regular),
             .ForeColor = Color.FromArgb(236, 240, 241),
             .AutoSize = False,
@@ -141,7 +142,7 @@ Public Class HasilGenerateTopik
             ' Topic Card Panel
             Dim cardPanel As New Panel() With {
                 .Location = New Point(30, yPosition),
-                .Size = New Size(Me.ClientSize.Width - 80, 180),
+                .Size = New Size(Me.ClientSize.Width - 80, 200),
                 .BackColor = Color.White,
                 .BorderStyle = BorderStyle.FixedSingle
             }
@@ -152,7 +153,7 @@ Public Class HasilGenerateTopik
                 .Text = $"#{topic.Rank}",
                 .Font = New Font("Segoe UI", 14, FontStyle.Bold),
                 .ForeColor = Color.White,
-                .BackColor = Color.FromArgb(52, 152, 219),
+                .BackColor = GetRankColor(topic.Rank),
                 .TextAlign = ContentAlignment.MiddleCenter,
                 .Size = New Size(50, 50),
                 .Location = New Point(10, 10)
@@ -170,15 +171,20 @@ Public Class HasilGenerateTopik
             }
             cardPanel.Controls.Add(lblTopicTitle)
 
-            ' Category Badge
-            Dim lblCategory As New Label() With {
-                .Text = $"?? {topic.Category}",
+            ' Category and Target Role
+            Dim categoryRoleText As String = $"?? {topic.Category}"
+            If Not String.IsNullOrEmpty(topic.TargetRole) Then
+                categoryRoleText &= $" | ?? Target: {topic.TargetRole}"
+            End If
+
+            Dim lblCategoryRole As New Label() With {
+                .Text = categoryRoleText,
                 .Font = New Font("Segoe UI", 9, FontStyle.Regular),
                 .ForeColor = Color.FromArgb(127, 140, 141),
                 .AutoSize = True,
                 .Location = New Point(70, 60)
             }
-            cardPanel.Controls.Add(lblCategory)
+            cardPanel.Controls.Add(lblCategoryRole)
 
             ' Description
             Dim lblDescription As New Label() With {
@@ -187,21 +193,21 @@ Public Class HasilGenerateTopik
                 .ForeColor = Color.FromArgb(52, 73, 94),
                 .AutoSize = False,
                 .Size = New Size(cardPanel.Width - 30, 80),
-                .Location = New Point(15, 85)
+                .Location = New Point(15, 95)
             }
             cardPanel.Controls.Add(lblDescription)
 
             ' Relevance Label
             Dim lblRelevance As New Label() With {
-                .Text = $"Relevansi: {(topic.Relevance * 100):F0}%",
-                .Font = New Font("Segoe UI", 9, FontStyle.Italic),
+                .Text = $"? Relevansi: {(topic.Relevance * 100):F0}%",
+                .Font = New Font("Segoe UI", 9, FontStyle.Bold),
                 .ForeColor = Color.FromArgb(39, 174, 96),
                 .AutoSize = True,
                 .Location = New Point(cardPanel.Width - 150, cardPanel.Height - 30)
             }
             cardPanel.Controls.Add(lblRelevance)
 
-            yPosition += 200
+            yPosition += 220
         Next
 
         ' Footer dengan tombol
@@ -252,6 +258,19 @@ Public Class HasilGenerateTopik
         ' Log activity
         LogActivity()
     End Sub
+
+    Private Function GetRankColor(rank As Integer) As Color
+        Select Case rank
+            Case 1
+                Return Color.FromArgb(241, 196, 15) ' Gold
+            Case 2
+                Return Color.FromArgb(149, 165, 166) ' Silver
+            Case 3
+                Return Color.FromArgb(205, 127, 50) ' Bronze
+            Case Else
+                Return Color.FromArgb(52, 152, 219) ' Blue
+        End Select
+    End Function
 
     Private Sub BtnGenerateAgain_Click(sender As Object, e As EventArgs)
         ' Kembali ke form generate topik

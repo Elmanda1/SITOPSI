@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class GenerateTopikSkripsi
     Inherits System.Windows.Forms.Form
 
@@ -22,121 +22,181 @@ Partial Class GenerateTopikSkripsi
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Label1 = New Label()
-        Label2 = New Label()
-        Label3 = New Label()
-        Label4 = New Label()
-        Label5 = New Label()
-        Label6 = New Label()
-        Label7 = New Label()
-        Label8 = New Label()
+        Dim navyColor As Color = Color.FromArgb(12, 45, 72)
+        
+        cardPanel = New RoundedPanel()
+        Label1 = New Label() ' Title
+        Label2 = New Label() ' "Berdasarkan Minat..."
+        Label3 = New Label() ' "Berikut rekomendasinya..."
+        TopicsListBox = New ListBox() ' To display topics
+        ButtonGenerateUlang = New RoundedButton() ' Generate Ulang button
+        ButtonPrintPreview = New RoundedButton() ' Print Preview button
+        ButtonPrint = New RoundedButton() ' Print PDF button
+        ButtonBack = New RoundedButton()
+
+        cardPanel.SuspendLayout()
         SuspendLayout()
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 13.0F)
-        Label1.Location = New Point(41, 26)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(297, 30)
-        Label1.TabIndex = 28
-        Label1.Text = "Generate Topik Skripsi, USER!"
-        ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 11.0F)
-        Label2.Location = New Point(53, 75)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(343, 25)
-        Label2.TabIndex = 29
-        Label2.Text = "Minat Bakatmu, Output Tes Minat Bakat"
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.Font = New Font("Segoe UI", 10.0F)
-        Label3.Location = New Point(41, 130)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(258, 23)
-        Label3.TabIndex = 30
-        Label3.Text = "Berikut Rekomendasi dari Kami..."
-        ' 
-        ' Label4
-        ' 
-        Label4.AutoSize = True
-        Label4.Font = New Font("Segoe UI", 10.0F)
-        Label4.Location = New Point(53, 175)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(137, 23)
-        Label4.TabIndex = 31
-        Label4.Text = "1. TOPIK SKRIPSI"
-        ' 
-        ' Label5
-        ' 
-        Label5.AutoSize = True
-        Label5.Font = New Font("Segoe UI", 10.0F)
-        Label5.Location = New Point(53, 216)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(137, 23)
-        Label5.TabIndex = 32
-        Label5.Text = "1. TOPIK SKRIPSI"
-        ' 
-        ' Label6
-        ' 
-        Label6.AutoSize = True
-        Label6.Font = New Font("Segoe UI", 10.0F)
-        Label6.Location = New Point(53, 255)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(137, 23)
-        Label6.TabIndex = 33
-        Label6.Text = "1. TOPIK SKRIPSI"
-        ' 
-        ' Label7
-        ' 
-        Label7.AutoSize = True
-        Label7.Font = New Font("Segoe UI", 10.0F)
-        Label7.Location = New Point(53, 295)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(137, 23)
-        Label7.TabIndex = 34
-        Label7.Text = "1. TOPIK SKRIPSI"
-        ' 
-        ' Label8
-        ' 
-        Label8.AutoSize = True
-        Label8.Font = New Font("Segoe UI", 10.0F)
-        Label8.Location = New Point(53, 339)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(137, 23)
-        Label8.TabIndex = 35
-        Label8.Text = "1. TOPIK SKRIPSI"
+
         ' 
         ' GenerateTopikSkripsi
         ' 
         AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(800, 450)
-        Controls.Add(Label8)
-        Controls.Add(Label7)
-        Controls.Add(Label6)
-        Controls.Add(Label5)
-        Controls.Add(Label4)
-        Controls.Add(Label3)
-        Controls.Add(Label2)
-        Controls.Add(Label1)
+        BackColor = Color.FromArgb(245, 247, 250)
+        ClientSize = New Size(900, 650)
+        Controls.Add(cardPanel)
+        Controls.Add(ButtonGenerateUlang)
+        Controls.Add(ButtonPrintPreview)
+        Controls.Add(ButtonPrint)
+        Controls.Add(ButtonBack)
         Name = "GenerateTopikSkripsi"
-        Text = "GenerateTopikSkripsi"
+        StartPosition = FormStartPosition.CenterScreen
+        Text = "Rekomendasi Topik Skripsi - SITOPSI"
+
+        ' 
+        ' cardPanel
+        ' 
+        cardPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        cardPanel.BackColor = Color.White
+        cardPanel.CornerRadius = 0
+        cardPanel.GradientColor1 = Color.White
+        cardPanel.GradientColor2 = Color.White
+        cardPanel.ShadowOffset = 0
+        cardPanel.Location = New Point(30, 30)
+        cardPanel.Size = New Size(840, 520)
+        cardPanel.Controls.Add(Label1)
+        cardPanel.Controls.Add(Label2)
+        cardPanel.Controls.Add(Label3)
+        cardPanel.Controls.Add(TopicsListBox)
+
+        ' 
+        ' Label1 (Title)
+        ' 
+        Label1.AutoSize = True
+        Label1.BackColor = Color.Transparent
+        Label1.Font = New Font("Segoe UI", 18.0F, FontStyle.Bold)
+        Label1.ForeColor = navyColor
+        Label1.Location = New Point(30, 30)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(403, 41)
+        Label1.TabIndex = 28
+        Label1.Text = "Rekomendasi Topik Skripsi"
+
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.BackColor = Color.Transparent
+        Label2.Font = New Font("Segoe UI", 12.0F, FontStyle.Italic)
+        Label2.ForeColor = Color.FromArgb(52, 73, 94)
+        Label2.Location = New Point(32, 80)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(343, 28)
+        Label2.TabIndex = 29
+        Label2.Text = "Berdasarkan minat bakat Anda di bidang..."
+
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.BackColor = Color.Transparent
+        Label3.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
+        Label3.ForeColor = navyColor
+        Label3.Location = New Point(33, 130)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(258, 23)
+        Label3.TabIndex = 30
+        Label3.Text = "Berikut Rekomendasi dari Kami:"
+
+        '
+        ' TopicsListBox
+        '
+        TopicsListBox.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        TopicsListBox.Font = New Font("Segoe UI", 11.0F)
+        TopicsListBox.FormattingEnabled = True
+        TopicsListBox.ItemHeight = 25
+        TopicsListBox.Location = New Point(35, 170)
+        TopicsListBox.Name = "TopicsListBox"
+        TopicsListBox.Size = New Size(770, 304)
+        TopicsListBox.TabIndex = 36
+
+        ' 
+        ' ButtonGenerateUlang
+        ' 
+        ButtonGenerateUlang.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        ButtonGenerateUlang.BackColor = navyColor
+        ButtonGenerateUlang.Cursor = Cursors.Hand
+        ButtonGenerateUlang.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
+        ButtonGenerateUlang.ForeColor = Color.White
+        ButtonGenerateUlang.CornerRadius = 12
+        ButtonGenerateUlang.BorderSize = 0.0F
+        ButtonGenerateUlang.Location = New Point(70, 580)
+        ButtonGenerateUlang.Name = "ButtonGenerateUlang"
+        ButtonGenerateUlang.Size = New Size(180, 50)
+        ButtonGenerateUlang.TabIndex = 45
+        ButtonGenerateUlang.Text = "Generate Ulang"
+
+        ' 
+        ' ButtonPrintPreview
+        ' 
+        ButtonPrintPreview.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        ButtonPrintPreview.BackColor = Color.FromArgb(41, 128, 185)
+        ButtonPrintPreview.Cursor = Cursors.Hand
+        ButtonPrintPreview.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
+        ButtonPrintPreview.ForeColor = Color.White
+        ButtonPrintPreview.CornerRadius = 12
+        ButtonPrintPreview.BorderSize = 0.0F
+        ButtonPrintPreview.Location = New Point(270, 580)
+        ButtonPrintPreview.Name = "ButtonPrintPreview"
+        ButtonPrintPreview.Size = New Size(180, 50)
+        ButtonPrintPreview.TabIndex = 47
+        ButtonPrintPreview.Text = "Print Preview"
+
+        ' 
+        ' ButtonPrint
+        ' 
+        ButtonPrint.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        ButtonPrint.BackColor = Color.FromArgb(39, 174, 96)
+        ButtonPrint.Cursor = Cursors.Hand
+        ButtonPrint.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
+        ButtonPrint.ForeColor = Color.White
+        ButtonPrint.CornerRadius = 12
+        ButtonPrint.BorderSize = 0.0F
+        ButtonPrint.Location = New Point(470, 580)
+        ButtonPrint.Name = "ButtonPrint"
+        ButtonPrint.Size = New Size(180, 50)
+        ButtonPrint.TabIndex = 46
+        ButtonPrint.Text = "Export PDF"
+
+        ' 
+        ' ButtonBack
+        ' 
+        ButtonBack.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        ButtonBack.BackColor = Color.White
+        ButtonBack.Cursor = Cursors.Hand
+        ButtonBack.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
+        ButtonBack.ForeColor = navyColor
+        ButtonBack.CornerRadius = 12
+        ButtonBack.BorderSize = 2.0F
+        ButtonBack.BorderColor = navyColor
+        ButtonBack.Location = New Point(700, 580)
+        ButtonBack.Name = "ButtonBack"
+        ButtonBack.Size = New Size(170, 50)
+        ButtonBack.TabIndex = 44
+        ButtonBack.Text = "⬅ Kembali"
+
+        cardPanel.ResumeLayout(False)
+        cardPanel.PerformLayout()
         ResumeLayout(False)
-        PerformLayout()
     End Sub
 
+    Friend WithEvents cardPanel As RoundedPanel
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
-    Friend WithEvents Label4 As Label
-    Friend WithEvents Label5 As Label
-    Friend WithEvents Label6 As Label
-    Friend WithEvents Label7 As Label
-    Friend WithEvents Label8 As Label
+    Friend WithEvents TopicsListBox As ListBox
+    Friend WithEvents ButtonGenerateUlang As RoundedButton
+    Friend WithEvents ButtonPrintPreview As RoundedButton
+    Friend WithEvents ButtonPrint As RoundedButton
+    Friend WithEvents ButtonBack As RoundedButton
 End Class
