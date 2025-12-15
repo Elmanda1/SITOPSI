@@ -17,16 +17,10 @@ Partial Class QuestionCFManagementForm
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim dgvCellStyle1 As New DataGridViewCellStyle()
-        Dim dgvCellStyle2 As New DataGridViewCellStyle()
-        Dim dgvCellStyle3 As New DataGridViewCellStyle()
-        Dim navyColor As Color = Color.FromArgb(44, 62, 80)
-        
+        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         lblTitle = New Label()
         btnBack = New Button()
         leftPanel = New Panel()
-        rightPanel = New Panel()
-        
         lblFormTitle = New Label()
         lblNomor = New Label()
         txtNomor = New NumericUpDown()
@@ -42,62 +36,46 @@ Partial Class QuestionCFManagementForm
         btnUpdate = New Button()
         btnDelete = New Button()
         btnClear = New Button()
-        
+        rightPanel = New Panel()
         lblGridTitle = New Label()
         txtSearch = New TextBox()
         dgvQuestions = New DataGridView()
-        
         leftPanel.SuspendLayout()
-        rightPanel.SuspendLayout()
         CType(txtNomor, ComponentModel.ISupportInitialize).BeginInit()
+        rightPanel.SuspendLayout()
         CType(dgvQuestions, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
-
-        ' 
-        ' QuestionCFManagementForm
-        ' 
-        AutoScaleDimensions = New SizeF(8.0F, 20.0F)
-        AutoScaleMode = AutoScaleMode.Font
-        BackColor = Color.FromArgb(245, 247, 250)
-        ClientSize = New Size(1200, 750)
-        Controls.Add(lblTitle)
-        Controls.Add(btnBack)
-        Controls.Add(leftPanel)
-        Controls.Add(rightPanel)
-        Name = "QuestionCFManagementForm"
-        Text = "Manajemen Pertanyaan - SITOPSI"
-        StartPosition = FormStartPosition.CenterScreen
-
         ' 
         ' lblTitle
         ' 
         lblTitle.AutoSize = True
-        lblTitle.Font = New Font("Segoe UI", 18.0F, FontStyle.Bold)
-        lblTitle.ForeColor = navyColor
+        lblTitle.Font = New Font("Segoe UI", 18F, FontStyle.Bold)
+        lblTitle.ForeColor = Color.FromArgb(CByte(44), CByte(62), CByte(80))
         lblTitle.Location = New Point(30, 20)
+        lblTitle.Name = "lblTitle"
+        lblTitle.Size = New Size(414, 41)
+        lblTitle.TabIndex = 0
         lblTitle.Text = "Manajemen Pertanyaan (CF)"
-
         ' 
         ' btnBack
         ' 
         btnBack.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         btnBack.BackColor = Color.White
-        btnBack.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
-        btnBack.ForeColor = navyColor
-        btnBack.Location = New Point(1000, 20)
-        btnBack.Size = New Size(170, 50)
-        btnBack.Text = "⬅ Kembali"
+        btnBack.FlatAppearance.BorderColor = Color.FromArgb(CByte(44), CByte(62), CByte(80))
         btnBack.FlatStyle = FlatStyle.Flat
-        btnBack.FlatAppearance.BorderSize = 1
-        btnBack.FlatAppearance.BorderColor = navyColor
-
-        '
+        btnBack.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
+        btnBack.ForeColor = Color.FromArgb(CByte(44), CByte(62), CByte(80))
+        btnBack.Location = New Point(1000, 20)
+        btnBack.Name = "btnBack"
+        btnBack.Size = New Size(170, 50)
+        btnBack.TabIndex = 1
+        btnBack.Text = "⬅ Kembali"
+        btnBack.UseVisualStyleBackColor = False
+        ' 
         ' leftPanel
-        '
+        ' 
         leftPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left
         leftPanel.BackColor = Color.White
-        leftPanel.Location = New Point(30, 80)
-        leftPanel.Size = New Size(450, 640)
         leftPanel.BorderStyle = BorderStyle.FixedSingle
         leftPanel.Controls.Add(lblFormTitle)
         leftPanel.Controls.Add(lblNomor)
@@ -114,141 +92,239 @@ Partial Class QuestionCFManagementForm
         leftPanel.Controls.Add(btnUpdate)
         leftPanel.Controls.Add(btnDelete)
         leftPanel.Controls.Add(btnClear)
-
-        '
+        leftPanel.Location = New Point(30, 80)
+        leftPanel.Name = "leftPanel"
+        leftPanel.Size = New Size(450, 640)
+        leftPanel.TabIndex = 2
+        ' 
+        ' lblFormTitle
+        ' 
+        lblFormTitle.AutoSize = True
+        lblFormTitle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        lblFormTitle.Location = New Point(20, 20)
+        lblFormTitle.Name = "lblFormTitle"
+        lblFormTitle.Size = New Size(173, 28)
+        lblFormTitle.TabIndex = 0
+        lblFormTitle.Text = "Form Pertanyaan"
+        ' 
+        ' lblNomor
+        ' 
+        lblNomor.AutoSize = True
+        lblNomor.Location = New Point(20, 65)
+        lblNomor.Name = "lblNomor"
+        lblNomor.Size = New Size(135, 20)
+        lblNomor.TabIndex = 1
+        lblNomor.Text = "Nomor Pertanyaan:"
+        ' 
+        ' txtNomor
+        ' 
+        txtNomor.Font = New Font("Segoe UI", 10F)
+        txtNomor.Location = New Point(20, 90)
+        txtNomor.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+        txtNomor.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        txtNomor.Name = "txtNomor"
+        txtNomor.Size = New Size(150, 30)
+        txtNomor.TabIndex = 2
+        txtNomor.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        ' 
+        ' lblPertanyaan
+        ' 
+        lblPertanyaan.AutoSize = True
+        lblPertanyaan.Location = New Point(20, 135)
+        lblPertanyaan.Name = "lblPertanyaan"
+        lblPertanyaan.Size = New Size(102, 20)
+        lblPertanyaan.TabIndex = 3
+        lblPertanyaan.Text = "Isi Pertanyaan:"
+        ' 
+        ' txtPertanyaan
+        ' 
+        txtPertanyaan.Font = New Font("Segoe UI", 10F)
+        txtPertanyaan.Location = New Point(20, 160)
+        txtPertanyaan.Multiline = True
+        txtPertanyaan.Name = "txtPertanyaan"
+        txtPertanyaan.ScrollBars = ScrollBars.Vertical
+        txtPertanyaan.Size = New Size(400, 100)
+        txtPertanyaan.TabIndex = 4
+        ' 
+        ' lblKategori
+        ' 
+        lblKategori.AutoSize = True
+        lblKategori.Location = New Point(20, 275)
+        lblKategori.Name = "lblKategori"
+        lblKategori.Size = New Size(114, 20)
+        lblKategori.TabIndex = 5
+        lblKategori.Text = "Target Kategori:"
+        ' 
+        ' cmbKategori
+        ' 
+        cmbKategori.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbKategori.Font = New Font("Segoe UI", 10F)
+        cmbKategori.Location = New Point(20, 300)
+        cmbKategori.Name = "cmbKategori"
+        cmbKategori.Size = New Size(250, 31)
+        cmbKategori.TabIndex = 6
+        ' 
+        ' lblCF
+        ' 
+        lblCF.AutoSize = True
+        lblCF.Location = New Point(290, 275)
+        lblCF.Name = "lblCF"
+        lblCF.Size = New Size(67, 20)
+        lblCF.TabIndex = 7
+        lblCF.Text = "CF Pakar:"
+        ' 
+        ' cmbCF
+        ' 
+        cmbCF.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbCF.Font = New Font("Segoe UI", 10F)
+        cmbCF.Location = New Point(290, 300)
+        cmbCF.Name = "cmbCF"
+        cmbCF.Size = New Size(130, 31)
+        cmbCF.TabIndex = 8
+        ' 
+        ' chkActive
+        ' 
+        chkActive.Checked = True
+        chkActive.CheckState = CheckState.Checked
+        chkActive.Location = New Point(20, 350)
+        chkActive.Name = "chkActive"
+        chkActive.Size = New Size(104, 24)
+        chkActive.TabIndex = 9
+        chkActive.Text = "Aktif"
+        ' 
+        ' chkPriority
+        ' 
+        chkPriority.Location = New Point(130, 350)
+        chkPriority.Name = "chkPriority"
+        chkPriority.Size = New Size(104, 24)
+        chkPriority.TabIndex = 10
+        chkPriority.Text = "Prioritas"
+        ' 
+        ' btnSave
+        ' 
+        btnSave.BackColor = Color.FromArgb(CByte(44), CByte(62), CByte(80))
+        btnSave.FlatAppearance.BorderSize = 0
+        btnSave.FlatStyle = FlatStyle.Flat
+        btnSave.ForeColor = Color.White
+        btnSave.Location = New Point(20, 400)
+        btnSave.Name = "btnSave"
+        btnSave.Size = New Size(125, 45)
+        btnSave.TabIndex = 11
+        btnSave.Text = "➕ Simpan"
+        btnSave.UseVisualStyleBackColor = False
+        ' 
+        ' btnUpdate
+        ' 
+        btnUpdate.BackColor = Color.FromArgb(CByte(52), CByte(152), CByte(219))
+        btnUpdate.FlatAppearance.BorderSize = 0
+        btnUpdate.FlatStyle = FlatStyle.Flat
+        btnUpdate.ForeColor = Color.White
+        btnUpdate.Location = New Point(155, 400)
+        btnUpdate.Name = "btnUpdate"
+        btnUpdate.Size = New Size(125, 45)
+        btnUpdate.TabIndex = 12
+        btnUpdate.Text = "💾 Update"
+        btnUpdate.UseVisualStyleBackColor = False
+        btnUpdate.Visible = False
+        ' 
+        ' btnDelete
+        ' 
+        btnDelete.BackColor = Color.FromArgb(CByte(231), CByte(76), CByte(60))
+        btnDelete.FlatAppearance.BorderSize = 0
+        btnDelete.FlatStyle = FlatStyle.Flat
+        btnDelete.ForeColor = Color.White
+        btnDelete.Location = New Point(290, 400)
+        btnDelete.Name = "btnDelete"
+        btnDelete.Size = New Size(130, 45)
+        btnDelete.TabIndex = 13
+        btnDelete.Text = "🗑️ Hapus"
+        btnDelete.UseVisualStyleBackColor = False
+        btnDelete.Visible = False
+        ' 
+        ' btnClear
+        ' 
+        btnClear.BackColor = Color.White
+        btnClear.FlatAppearance.BorderColor = Color.FromArgb(CByte(44), CByte(62), CByte(80))
+        btnClear.FlatStyle = FlatStyle.Flat
+        btnClear.ForeColor = Color.FromArgb(CByte(44), CByte(62), CByte(80))
+        btnClear.Location = New Point(20, 455)
+        btnClear.Name = "btnClear"
+        btnClear.Size = New Size(400, 45)
+        btnClear.TabIndex = 14
+        btnClear.Text = "🔄 Clear Form"
+        btnClear.UseVisualStyleBackColor = False
+        ' 
         ' rightPanel
-        '
+        ' 
         rightPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         rightPanel.BackColor = Color.White
-        rightPanel.Location = New Point(500, 80)
-        rightPanel.Size = New Size(670, 640)
         rightPanel.BorderStyle = BorderStyle.FixedSingle
         rightPanel.Controls.Add(lblGridTitle)
         rightPanel.Controls.Add(txtSearch)
         rightPanel.Controls.Add(dgvQuestions)
-
-        ' -- Controls for Left Panel --
-
-        lblFormTitle.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
-        lblFormTitle.Location = New Point(20, 20)
-        lblFormTitle.AutoSize = True
-        lblFormTitle.Text = "Form Pertanyaan"
-
-        lblNomor.Location = New Point(20, 65)
-        lblNomor.AutoSize = True
-        lblNomor.Text = "Nomor Pertanyaan:"
-
-        txtNomor.Location = New Point(20, 90)
-        txtNomor.Size = New Size(150, 27)
-        txtNomor.Font = New Font("Segoe UI", 10.0F)
-        txtNomor.Minimum = 1
-        txtNomor.Maximum = 10000
-
-        lblPertanyaan.Location = New Point(20, 135)
-        lblPertanyaan.AutoSize = True
-        lblPertanyaan.Text = "Isi Pertanyaan:"
-
-        txtPertanyaan.Location = New Point(20, 160)
-        txtPertanyaan.Size = New Size(400, 100)
-        txtPertanyaan.Multiline = True
-        txtPertanyaan.ScrollBars = ScrollBars.Vertical
-        txtPertanyaan.Font = New Font("Segoe UI", 10.0F)
-
-        lblKategori.Location = New Point(20, 275)
-        lblKategori.AutoSize = True
-        lblKategori.Text = "Target Kategori:"
-
-        cmbKategori.Location = New Point(20, 300)
-        cmbKategori.Size = New Size(250, 28)
-        cmbKategori.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbKategori.Font = New Font("Segoe UI", 10.0F)
-        
-        lblCF.Location = New Point(290, 275)
-        lblCF.AutoSize = True
-        lblCF.Text = "CF Pakar:"
-        
-        cmbCF.Location = New Point(290, 300)
-        cmbCF.Size = New Size(130, 28)
-        cmbCF.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbCF.Font = New Font("Segoe UI", 10.0F)
-
-        chkActive.Location = New Point(20, 350)
-        chkActive.Text = "Aktif"
-        chkActive.Checked = True
-        
-        chkPriority.Location = New Point(120, 350)
-        chkPriority.Text = "Prioritas"
-
-        btnSave.Location = New Point(20, 400)
-        btnSave.Size = New Size(125, 45)
-        btnSave.BackColor = navyColor
-        btnSave.ForeColor = Color.White
-        btnSave.Text = "➕ Simpan"
-        btnSave.FlatStyle = FlatStyle.Flat
-        btnSave.FlatAppearance.BorderSize = 0
-        
-        btnUpdate.Location = New Point(155, 400)
-        btnUpdate.Size = New Size(125, 45)
-        btnUpdate.BackColor = Color.FromArgb(52, 152, 219)
-        btnUpdate.ForeColor = Color.White
-        btnUpdate.Text = "💾 Update"
-        btnUpdate.Visible = False
-        btnUpdate.FlatStyle = FlatStyle.Flat
-        btnUpdate.FlatAppearance.BorderSize = 0
-
-        btnDelete.Location = New Point(290, 400)
-        btnDelete.Size = New Size(130, 45)
-        btnDelete.BackColor = Color.FromArgb(231, 76, 60)
-        btnDelete.ForeColor = Color.White
-        btnDelete.Text = "🗑️ Hapus"
-        btnDelete.Visible = False
-        btnDelete.FlatStyle = FlatStyle.Flat
-        btnDelete.FlatAppearance.BorderSize = 0
-
-        btnClear.Location = New Point(20, 455)
-        btnClear.Size = New Size(400, 45)
-        btnClear.BackColor = Color.White
-        btnClear.ForeColor = navyColor
-        btnClear.Text = "🔄 Clear Form"
-        btnClear.FlatStyle = FlatStyle.Flat
-        btnClear.FlatAppearance.BorderSize = 1
-        btnClear.FlatAppearance.BorderColor = navyColor
-
-        ' -- Controls for Right Panel --
-
-        lblGridTitle.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
-        lblGridTitle.Location = New Point(20, 20)
+        rightPanel.Location = New Point(500, 80)
+        rightPanel.Name = "rightPanel"
+        rightPanel.Size = New Size(670, 640)
+        rightPanel.TabIndex = 3
+        ' 
+        ' lblGridTitle
+        ' 
         lblGridTitle.AutoSize = True
+        lblGridTitle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        lblGridTitle.Location = New Point(20, 20)
+        lblGridTitle.Name = "lblGridTitle"
+        lblGridTitle.Size = New Size(186, 28)
+        lblGridTitle.TabIndex = 0
         lblGridTitle.Text = "Daftar Pertanyaan"
-
+        ' 
+        ' txtSearch
+        ' 
+        txtSearch.Font = New Font("Segoe UI", 10F)
         txtSearch.Location = New Point(20, 55)
-        txtSearch.Size = New Size(300, 27)
-        txtSearch.Font = New Font("Segoe UI", 10.0F)
-        
-        dgvQuestions.Location = New Point(20, 100)
-        dgvQuestions.Size = New Size(630, 510)
-        dgvQuestions.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
-        dgvQuestions.BackgroundColor = Color.White
-        dgvQuestions.BorderStyle = BorderStyle.None
+        txtSearch.Name = "txtSearch"
+        txtSearch.Size = New Size(300, 30)
+        txtSearch.TabIndex = 1
+        ' 
+        ' dgvQuestions
+        ' 
         dgvQuestions.AllowUserToAddRows = False
         dgvQuestions.AllowUserToDeleteRows = False
-        dgvQuestions.ReadOnly = True
-        dgvQuestions.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        dgvQuestions.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         dgvQuestions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-        dgvQuestions.RowHeadersVisible = False
-        dgvQuestions.EnableHeadersVisualStyles = False
+        dgvQuestions.BackgroundColor = Color.White
+        dgvQuestions.BorderStyle = BorderStyle.None
+        dgvQuestions.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         dgvQuestions.ColumnHeadersHeight = 40
         dgvQuestions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        dgvQuestions.ColumnHeadersDefaultCellStyle = dgvCellStyle1
-        dgvQuestions.DefaultCellStyle = dgvCellStyle2
-        dgvQuestions.RowsDefaultCellStyle = dgvCellStyle3
+        dgvQuestions.EnableHeadersVisualStyles = False
+        dgvQuestions.Location = New Point(20, 100)
+        dgvQuestions.Name = "dgvQuestions"
+        dgvQuestions.ReadOnly = True
+        dgvQuestions.RowHeadersVisible = False
+        dgvQuestions.RowHeadersWidth = 51
         dgvQuestions.RowTemplate.Height = 35
-
+        dgvQuestions.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        dgvQuestions.Size = New Size(630, 510)
+        dgvQuestions.TabIndex = 2
+        ' 
+        ' QuestionCFManagementForm
+        ' 
+        AutoScaleDimensions = New SizeF(8F, 20F)
+        AutoScaleMode = AutoScaleMode.Font
+        BackColor = Color.FromArgb(CByte(245), CByte(247), CByte(250))
+        ClientSize = New Size(1200, 750)
+        Controls.Add(lblTitle)
+        Controls.Add(btnBack)
+        Controls.Add(leftPanel)
+        Controls.Add(rightPanel)
+        Name = "QuestionCFManagementForm"
+        StartPosition = FormStartPosition.CenterScreen
+        Text = "Manajemen Pertanyaan - SITOPSI"
         leftPanel.ResumeLayout(False)
         leftPanel.PerformLayout()
+        CType(txtNomor, ComponentModel.ISupportInitialize).EndInit()
         rightPanel.ResumeLayout(False)
         rightPanel.PerformLayout()
-        CType(txtNomor, ComponentModel.ISupportInitialize).EndInit()
         CType(dgvQuestions, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()

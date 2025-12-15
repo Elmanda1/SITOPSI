@@ -42,7 +42,7 @@ Partial Class LandingPage
         ' 
         ' Panel1
         ' 
-        Panel1.BackColor = Color.FromArgb(44, 62, 80)
+        Panel1.BackColor = Color.FromArgb(CByte(44), CByte(62), CByte(80))
         Panel1.Controls.Add(Label5)
         Panel1.Controls.Add(PictureBox2)
         Panel1.Controls.Add(Label3)
@@ -58,11 +58,11 @@ Partial Class LandingPage
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Font = New Font("Segoe UI", 14.0F)
+        Label5.Font = New Font("Segoe UI", 14F)
         Label5.ForeColor = Color.White
         Label5.Location = New Point(321, 150)
         Label5.Name = "Label5"
-        Label5.Size = New Size(259, 32)
+        Label5.Size = New Size(242, 32)
         Label5.TabIndex = 5
         Label5.Text = "Berbasis Sistem Pakar"
         Label5.TextAlign = ContentAlignment.MiddleCenter
@@ -81,11 +81,11 @@ Partial Class LandingPage
         ' Label3
         ' 
         Label3.AutoSize = True
-        Label3.Font = New Font("Segoe UI", 11.0F)
+        Label3.Font = New Font("Segoe UI", 11F)
         Label3.ForeColor = Color.White
         Label3.Location = New Point(250, 190)
         Label3.Name = "Label3"
-        Label3.Size = New Size(405, 25)
+        Label3.Size = New Size(444, 25)
         Label3.TabIndex = 3
         Label3.Text = "Temukan topik skripsi yang sesuai dengan minatmu"
         Label3.TextAlign = ContentAlignment.MiddleCenter
@@ -93,11 +93,11 @@ Partial Class LandingPage
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 14.0F)
+        Label2.Font = New Font("Segoe UI", 14F)
         Label2.ForeColor = Color.White
         Label2.Location = New Point(280, 120)
         Label2.Name = "Label2"
-        Label2.Size = New Size(341, 32)
+        Label2.Size = New Size(331, 32)
         Label2.TabIndex = 2
         Label2.Text = "Sistem Informasi Topik Skripsi"
         Label2.TextAlign = ContentAlignment.MiddleCenter
@@ -105,7 +105,7 @@ Partial Class LandingPage
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 32.0F, FontStyle.Bold)
+        Label1.Font = New Font("Segoe UI", 32F, FontStyle.Bold)
         Label1.ForeColor = Color.White
         Label1.Location = New Point(336, 40)
         Label1.Name = "Label1"
@@ -127,7 +127,7 @@ Partial Class LandingPage
         ' 
         ' Panel2
         ' 
-        Panel2.BackColor = Color.FromArgb(245, 247, 250)
+        Panel2.BackColor = Color.FromArgb(CByte(245), CByte(247), CByte(250))
         Panel2.Controls.Add(Label4)
         Panel2.Controls.Add(Button3)
         Panel2.Controls.Add(Button1)
@@ -140,23 +140,23 @@ Partial Class LandingPage
         ' Label4
         ' 
         Label4.AutoSize = True
-        Label4.Font = New Font("Segoe UI", 20.0F, FontStyle.Bold)
-        Label4.ForeColor = Color.FromArgb(44, 62, 80)
+        Label4.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
+        Label4.ForeColor = Color.FromArgb(CByte(44), CByte(62), CByte(80))
         Label4.Location = New Point(290, 40)
         Label4.Name = "Label4"
-        Label4.Size = New Size(322, 46)
+        Label4.Size = New Size(283, 46)
         Label4.TabIndex = 2
-        Label4.Text = "Selamat Datang! 👋"
+        Label4.Text = "Selamat Datang!"
         Label4.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' Button3
         ' 
-        Button3.BackColor = Color.FromArgb(236, 240, 241)
+        Button3.BackColor = Color.FromArgb(CByte(236), CByte(240), CByte(241))
         Button3.Cursor = Cursors.Hand
         Button3.FlatAppearance.BorderSize = 0
         Button3.FlatStyle = FlatStyle.Flat
-        Button3.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
-        Button3.ForeColor = Color.FromArgb(44, 62, 80)
+        Button3.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        Button3.ForeColor = Color.FromArgb(CByte(44), CByte(62), CByte(80))
         Button3.Location = New Point(470, 140)
         Button3.Name = "Button3"
         Button3.Size = New Size(250, 60)
@@ -166,11 +166,11 @@ Partial Class LandingPage
         ' 
         ' Button1
         ' 
-        Button1.BackColor = Color.FromArgb(52, 152, 219)
+        Button1.BackColor = Color.FromArgb(CByte(52), CByte(152), CByte(219))
         Button1.Cursor = Cursors.Hand
         Button1.FlatAppearance.BorderSize = 0
         Button1.FlatStyle = FlatStyle.Flat
-        Button1.Font = New Font("Segoe UI", 12.0F, FontStyle.Bold)
+        Button1.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         Button1.ForeColor = Color.White
         Button1.Location = New Point(180, 140)
         Button1.Name = "Button1"
@@ -181,7 +181,7 @@ Partial Class LandingPage
         ' 
         ' LandingPage
         ' 
-        AutoScaleDimensions = New SizeF(8.0F, 20.0F)
+        AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(900, 600)
         Controls.Add(Panel2)

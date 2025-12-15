@@ -39,9 +39,6 @@ Public Class ProfileForm
         ' Make username read-only
         txtUsername.Enabled = False
 
-        ' Populate info labels
-        PopulateProfileInfo()
-
         ' Add handlers
         AddHandler btnSaveChanges.Click, AddressOf BtnSaveChanges_Click
         AddHandler btnBack.Click, AddressOf BtnBack_Click
@@ -121,19 +118,19 @@ Public Class ProfileForm
             MessageBox.Show("Error loading user data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-    
+
     Private Sub LoadUserStatistics()
         Try
             Using conn As New MySqlConnection(ConnectionString)
                 conn.Open()
-                
+
                 ' Get total tests
                 Dim testQuery As String = "SELECT COUNT(*) FROM tests WHERE user_id = @userId"
                 Using cmd As New MySqlCommand(testQuery, conn)
                     cmd.Parameters.AddWithValue("@userId", LoggedUserId)
                     totalTests = Convert.ToInt32(cmd.ExecuteScalar())
                 End Using
-                
+
                 ' Get last test date and CF score
                 If totalTests > 0 Then
                     Dim lastTestQuery As String = "SELECT tanggal, nilai_cf_akhir FROM tests WHERE user_id = @userId ORDER BY tanggal DESC LIMIT 1"
@@ -149,36 +146,11 @@ Public Class ProfileForm
                         End Using
                     End Using
                 End If
-                
+
             End Using
         Catch ex As Exception
             MessageBox.Show("Error loading statistics: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-    End Sub
-    
-    Private Sub PopulateProfileInfo()
-        ' Populate info labels with loaded data
-        lblAccountStatusValue.Text = accountStatus
-        lblRoleValue.Text = userRole
-        lblJoinDateValue.Text = accountCreatedDate
-        
-        If String.IsNullOrEmpty(LoggedMinatBakat) Then
-            lblMinatBakatValue.Text = "Belum mengikuti tes"
-            lblMinatBakatValue.ForeColor = Color.Gray
-        Else
-            lblMinatBakatValue.Text = LoggedMinatBakat
-            lblMinatBakatValue.ForeColor = successColor
-        End If
-        
-        ' Statistics
-        lblTotalTestsValue.Text = totalTests.ToString()
-        lblLastTestValue.Text = lastTestDate
-        
-        If latestCFScore > 0 Then
-            lblCFScoreValue.Text = latestCFScore.ToString("F4")
-        Else
-            lblCFScoreValue.Text = "-"
-        End If
     End Sub
 
     Private Sub BtnBack_Click(sender As Object, e As EventArgs)

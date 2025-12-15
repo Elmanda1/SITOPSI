@@ -49,21 +49,6 @@ Partial Class ProfileForm
 
         ' Stats Panel
         statsTableLayoutPanel = New TableLayoutPanel()
-        lblRole = New Label()
-        lblRoleValue = New Label()
-        lblAccountStatus = New Label()
-        lblAccountStatusValue = New Label()
-        lblJoinDate = New Label()
-        lblJoinDateValue = New Label()
-        lblMinatBakat = New Label()
-        lblMinatBakatValue = New Label()
-        lblTotalTests = New Label()
-        lblTotalTestsValue = New Label()
-        lblLastTest = New Label()
-        lblLastTestValue = New Label()
-        lblCFScore = New Label()
-        lblCFScoreValue = New Label()
-
 
         btnSaveChanges = New Button()
         btnBack = New Button()
@@ -114,18 +99,6 @@ Partial Class ProfileForm
         lblTitle.TabIndex = 0
         lblTitle.Text = "Profile Saya"
         lblTitle.TextAlign = ContentAlignment.MiddleCenter
-
-        ' 
-        ' picProfile
-        ' 
-        ' picProfile.Image = My.Resources.logo ' Uncomment if logo resource exists
-        picProfile.BackColor = Color.LightGray ' Placeholder background
-        picProfile.Location = New Point(300, 70)
-        picProfile.Name = "picProfile"
-        picProfile.Size = New Size(100, 100)
-        picProfile.SizeMode = PictureBoxSizeMode.StretchImage
-        picProfile.TabIndex = 1
-        picProfile.TabStop = False
 
         '
         ' mainTableLayoutPanel
@@ -201,75 +174,12 @@ Partial Class ProfileForm
         '
         statsTableLayoutPanel.ColumnCount = 1
         statsTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0F))
-        statsTableLayoutPanel.Controls.Add(lblRole, 0, 0)
-        statsTableLayoutPanel.Controls.Add(lblRoleValue, 0, 1)
-        statsTableLayoutPanel.Controls.Add(lblAccountStatus, 0, 2)
-        statsTableLayoutPanel.Controls.Add(lblAccountStatusValue, 0, 3)
-        statsTableLayoutPanel.Controls.Add(lblJoinDate, 0, 4)
-        statsTableLayoutPanel.Controls.Add(lblJoinDateValue, 0, 5)
-        statsTableLayoutPanel.Controls.Add(lblMinatBakat, 0, 6)
-        statsTableLayoutPanel.Controls.Add(lblMinatBakatValue, 0, 7)
-        statsTableLayoutPanel.Controls.Add(lblTotalTests, 0, 8)
-        statsTableLayoutPanel.Controls.Add(lblTotalTestsValue, 0, 9)
-        statsTableLayoutPanel.Controls.Add(lblLastTest, 0, 10)
-        statsTableLayoutPanel.Controls.Add(lblLastTestValue, 0, 11)
-        statsTableLayoutPanel.Controls.Add(lblCFScore, 0, 12)
-        statsTableLayoutPanel.Controls.Add(lblCFScoreValue, 0, 13)
         statsTableLayoutPanel.Dock = DockStyle.Fill
         statsTableLayoutPanel.Name = "statsTableLayoutPanel"
         statsTableLayoutPanel.RowCount = 14
         For i As Integer = 0 To 13
             statsTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F / 14.0F))
         Next
-        
-        ' Role
-        lblRole.Text = "Role"
-        lblRole.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
-        lblRole.ForeColor = navyColor
-        lblRoleValue.Text = "-"
-        lblRoleValue.Font = New Font("Segoe UI", 10.0F)
-
-        ' Account Status
-        lblAccountStatus.Text = "Status Akun"
-        lblAccountStatus.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
-        lblAccountStatus.ForeColor = navyColor
-        lblAccountStatusValue.Text = "-"
-        lblAccountStatusValue.Font = New Font("Segoe UI", 10.0F)
-
-        ' Join Date
-        lblJoinDate.Text = "Tanggal Bergabung"
-        lblJoinDate.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
-        lblJoinDate.ForeColor = navyColor
-        lblJoinDateValue.Text = "-"
-        lblJoinDateValue.Font = New Font("Segoe UI", 10.0F)
-        
-        ' Minat Bakat
-        lblMinatBakat.Text = "Hasil Minat Bakat"
-        lblMinatBakat.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
-        lblMinatBakat.ForeColor = navyColor
-        lblMinatBakatValue.Text = "-"
-        lblMinatBakatValue.Font = New Font("Segoe UI", 10.0F)
-
-        ' Total Tests
-        lblTotalTests.Text = "Total Tes Diambil"
-        lblTotalTests.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
-        lblTotalTests.ForeColor = navyColor
-        lblTotalTestsValue.Text = "-"
-        lblTotalTestsValue.Font = New Font("Segoe UI", 10.0F)
-
-        ' Last Test
-        lblLastTest.Text = "Tes Terakhir"
-        lblLastTest.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
-        lblLastTest.ForeColor = navyColor
-        lblLastTestValue.Text = "-"
-        lblLastTestValue.Font = New Font("Segoe UI", 10.0F)
-
-        ' CF Score
-        lblCFScore.Text = "Skor CF Terakhir"
-        lblCFScore.Font = New Font("Segoe UI", 10.0F, FontStyle.Bold)
-        lblCFScore.ForeColor = navyColor
-        lblCFScoreValue.Text = "-"
-        lblCFScoreValue.Font = New Font("Segoe UI", 10.0F)
 
         ' Save Button
         btnSaveChanges.BackColor = navyColor
@@ -317,20 +227,6 @@ Partial Class ProfileForm
     Friend WithEvents txtEmail As TextBox
     Friend WithEvents lblPhone As Label
     Friend WithEvents txtPhone As TextBox
-    Friend WithEvents lblRole As Label
-    Friend WithEvents lblRoleValue As Label
-    Friend WithEvents lblAccountStatus As Label
-    Friend WithEvents lblAccountStatusValue As Label
-    Friend WithEvents lblJoinDate As Label
-    Friend WithEvents lblJoinDateValue As Label
-    Friend WithEvents lblMinatBakat As Label
-    Friend WithEvents lblMinatBakatValue As Label
-    Friend WithEvents lblTotalTests As Label
-    Friend WithEvents lblTotalTestsValue As Label
-    Friend WithEvents lblLastTest As Label
-    Friend WithEvents lblLastTestValue As Label
-    Friend WithEvents lblCFScore As Label
-    Friend WithEvents lblCFScoreValue As Label
     Friend WithEvents btnSaveChanges As Button
     Friend WithEvents btnBack As Button
 End Class

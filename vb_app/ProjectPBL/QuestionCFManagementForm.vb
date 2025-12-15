@@ -90,7 +90,7 @@ Public Class QuestionCFManagementForm
                     query &= "WHERE q.isi_pertanyaan LIKE @search "
                 End If
                 query &= "ORDER BY q.nomor"
-                
+
                 Using adapter As New MySqlDataAdapter(query, conn)
                     If Not String.IsNullOrWhiteSpace(searchText) Then
                         adapter.SelectCommand.Parameters.AddWithValue("@search", "%" & searchText & "%")
@@ -329,6 +329,10 @@ Public Class QuestionCFManagementForm
         Else
             btn.BackColor = whiteColor
         End If
+    End Sub
+
+    Private Sub chkPriority_CheckedChanged(sender As Object, e As EventArgs) Handles chkPriority.CheckedChanged
+
     End Sub
 
 #End Region
