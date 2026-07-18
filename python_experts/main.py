@@ -1,24 +1,3 @@
-"""Simple JSON CLI for the AI engine.
-
-Usage:
-  - Read JSON from stdin (recommended):
-      echo '{"user_id": 1, "answers": [...]}' | python main.py
-  - Or pass an input file:
-      python main.py --input-file input.json
-
-Input JSON format:
-{
-    "user_id": 123,
-    "answers": [
-        {"question_id": 1, "option_id": 2, "category_id": 2, "cf_value": 0.6},
-        {"question_id": 2, "option_id": 5, "category_id": 1, "cf_value": 0.6},
-        ...
-    ]
-}
-
-The script calls the inference engine in `core.inference` and prints JSON results to stdout.
-"""
-
 import sys
 import os
 import json

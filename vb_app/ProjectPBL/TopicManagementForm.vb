@@ -11,6 +11,16 @@ Public Class TopicManagementForm
     Private ReadOnly whiteColor As Color = Color.White
     Private ReadOnly lightGreyHoverColor As Color = Color.FromArgb(236, 240, 241)
 
+    ' Helper class for ComboBox binding
+    Public Class CategoryItem
+        Public Property Id As Integer
+        Public Property Name As String
+        
+        Public Overrides Function ToString() As String
+            Return Name
+        End Function
+    End Class
+
     Private Sub TopicManagementForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Not IsLoggedIn() Or Not IsAdmin() Then
             MessageBox.Show("Akses ditolak!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -50,10 +60,11 @@ Public Class TopicManagementForm
                 Using cmd As New MySqlCommand(query, conn)
                     Using reader As MySqlDataReader = cmd.ExecuteReader()
                         While reader.Read()
-                            cmbCategory.Items.Add(New With {
+                            Dim item As New CategoryItem With {
                                 .Id = reader.GetInt32("category_id"),
                                 .Name = reader.GetString("nama")
-                            })
+                            }
+                            cmbCategory.Items.Add(item)
                         End While
                     End Using
                 End Using
@@ -105,6 +116,10 @@ Public Class TopicManagementForm
                 Return
             End If
 
+            ' Get category ID from selected item
+            Dim selectedCategory As CategoryItem = CType(cmbCategory.SelectedItem, CategoryItem)
+            Dim categoryId As Integer = selectedCategory.Id
+
             Using conn As New MySqlConnection(ConnectionString)
                 conn.Open()
 
@@ -112,7 +127,7 @@ Public Class TopicManagementForm
                                      "VALUES (@categoryId, @targetRole, @judul, @deskripsi, @isActive, @isFeasible, 0, NOW())"
 
                 Using cmd As New MySqlCommand(query, conn)
-                    cmd.Parameters.AddWithValue("@categoryId", cmbCategory.SelectedValue)
+                    cmd.Parameters.AddWithValue("@categoryId", categoryId)
                     cmd.Parameters.AddWithValue("@targetRole", If(String.IsNullOrWhiteSpace(txtTargetRole.Text), CType(DBNull.Value, Object), txtTargetRole.Text))
                     cmd.Parameters.AddWithValue("@judul", txtJudul.Text)
                     cmd.Parameters.AddWithValue("@deskripsi", If(String.IsNullOrWhiteSpace(txtDeskripsi.Text), CType(DBNull.Value, Object), txtDeskripsi.Text))
@@ -137,6 +152,10 @@ Public Class TopicManagementForm
         If currentTopicId = 0 OrElse MessageBox.Show("Apakah Anda yakin ingin mengupdate topik ini?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return
 
         Try
+            ' Get category ID from selected item
+            Dim selectedCategory As CategoryItem = CType(cmbCategory.SelectedItem, CategoryItem)
+            Dim categoryId As Integer = selectedCategory.Id
+
             Using conn As New MySqlConnection(ConnectionString)
                 conn.Open()
 
@@ -150,7 +169,7 @@ Public Class TopicManagementForm
                                      "WHERE topic_id = @id"
 
                 Using cmd As New MySqlCommand(query, conn)
-                    cmd.Parameters.AddWithValue("@categoryId", cmbCategory.SelectedValue)
+                    cmd.Parameters.AddWithValue("@categoryId", categoryId)
                     cmd.Parameters.AddWithValue("@targetRole", If(String.IsNullOrWhiteSpace(txtTargetRole.Text), CType(DBNull.Value, Object), txtTargetRole.Text))
                     cmd.Parameters.AddWithValue("@judul", txtJudul.Text)
                     cmd.Parameters.AddWithValue("@deskripsi", If(String.IsNullOrWhiteSpace(txtDeskripsi.Text), CType(DBNull.Value, Object), txtDeskripsi.Text))
@@ -229,7 +248,16 @@ Public Class TopicManagementForm
                     cmd.Parameters.AddWithValue("@id", currentTopicId)
                     Using reader As MySqlDataReader = cmd.ExecuteReader()
                         If reader.Read() Then
-                            cmbCategory.SelectedValue = reader.GetInt32("kategori_id")
+                            ' Find and select the category by ID
+                            Dim categoryId As Integer = reader.GetInt32("kategori_id")
+                            For i As Integer = 0 To cmbCategory.Items.Count - 1
+                                Dim item As CategoryItem = CType(cmbCategory.Items(i), CategoryItem)
+                                If item.Id = categoryId Then
+                                    cmbCategory.SelectedIndex = i
+                                    Exit For
+                                End If
+                            Next
+                            
                             txtTargetRole.Text = If(IsDBNull(reader("target_role")), "", reader.GetString("target_role"))
                             txtJudul.Text = reader.GetString("judul")
                             txtDeskripsi.Text = If(IsDBNull(reader("deskripsi")), "", reader.GetString("deskripsi"))

@@ -10,10 +10,6 @@ Public Module PythonBridge
     Private ReadOnly PythonExe As String = "python"
     Private ReadOnly ScriptPath As String = "c:\\Users\\lunox\\Documents\\SITOPSI\\python_experts\\main.py"
 
-    ''' <summary>
-    ''' Call the Python AI CLI with a list of facts and return raw JSON output.
-    ''' Throws an exception on process failure.
-    ''' </summary>
     Public Function CallPythonInference(facts As List(Of String)) As String
         Dim inputObj = New Dictionary(Of String, Object) From {{"facts", facts}}
         Dim inputJson As String = JsonSerializer.Serialize(inputObj)
@@ -47,9 +43,6 @@ Public Module PythonBridge
         End Using
     End Function
 
-    ''' <summary>
-    ''' Try to parse the JSON result and return a JsonElement. Caller may inspect it.
-    ''' </summary>
     Public Function TryParseResult(json As String, ByRef parsed As JsonElement) As Boolean
         Try
             parsed = JsonSerializer.Deserialize(Of JsonElement)(json)

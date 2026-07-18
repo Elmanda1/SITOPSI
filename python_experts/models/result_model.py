@@ -1,10 +1,3 @@
-"""
-Data models untuk hasil inference.
-
-Note: Model ini opsional karena Python inference menggunakan dict biasa.
-File ini disediakan untuk type hints dan dokumentasi struktur data.
-"""
-
 from dataclasses import dataclass
 from typing import List, Dict, Optional
 
@@ -26,7 +19,6 @@ class RecommendedCategory:
     score: float
     answer_count: int
 
-
 @dataclass
 class InferenceResult:
     """Hasil lengkap dari inference engine"""
@@ -37,7 +29,6 @@ class InferenceResult:
     interpretation: str
     next_steps: str
     topic_recommendations: Optional[List[Dict]] = None
-
 
 # Example usage (for documentation):
 if __name__ == "__main__":

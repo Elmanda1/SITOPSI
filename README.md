@@ -1,277 +1,435 @@
-# SITOPSI - Sistem Informasi Tes Orientasi Profesi Sistem Informasi
+# SISTEM INFORMASI TOPIK SKRIPSI BERBASIS SISTEM PAKAR
 
-Aplikasi untuk membantu mahasiswa menentukan minat dan bakat di bidang IT melalui tes berbasis **Forward Chaining** dan **Certainty Factor**, dengan rekomendasi topik skripsi yang sesuai.
+**SITOPSI** — Aplikasi desktop untuk membantu mahasiswa Program Studi Teknik Informatika menentukan minat dan bakat di bidang IT melalui tes berbasis **Certainty Factor (CF)** dan **Forward Chaining**, kemudian memberikan rekomendasi topik skripsi yang sesuai.
 
 ---
 
-## 📁 Struktur Direktori
+## DAFTAR ISI
+
+- [Sekilas Tentang SITOPSI](#sekilas-tentang-sitopsi)
+- [Fitur Aplikasi (Screenshots)](#fitur-aplikasi-screenshots)
+- [Struktur Proyek](#struktur-proyek)
+- [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+- [Alur Sistem](#alur-sistem)
+- [Algoritma Certainty Factor](#algoritma-certainty-factor)
+- [Integrasi VB.NET dengan Python](#integrasi-vbnet-dengan-python)
+- [Cara Menjalankan](#cara-menjalankan)
+- [Lisensi](#lisensi)
+
+---
+
+## SEKILAS TENTANG SITOPSI
+
+SITOPSI adalah sistem pakar berbasis desktop yang dirancang untuk:
+
+1. **Mengidentifikasi minat dan bakat mahasiswa** di bidang Teknik Informatika menggunakan metode Certainty Factor.
+2. **Memberikan rekomendasi topik skripsi** yang sesuai dengan hasil tes minat bakat.
+3. **Menyediakan dashboard manajemen** bagi admin untuk mengelola data pertanyaan, rules, topik, dan user.
+
+Sistem mengklasifikasikan minat mahasiswa ke dalam **4 kategori utama**:
+
+| Kategori | Bidang |
+|----------|--------|
+| A | Backend & Software Engineering |
+| B | Frontend & Web Design |
+| C | UI/UX Design |
+| D | Data, Cyber & System Thinking |
+
+Dengan **100+ pertanyaan** yang terbagi dalam 4 tingkatan (Behavioral, Skill, Interest, Passion) dan **240+ topik skripsi** yang siap direkomendasikan.
+
+---
+
+## FITUR APLIKASI (SCREENSHOTS)
+
+### 1. Log Aktivitas
+Riwayat aktivitas user (login/logout) dengan waktu, untuk audit admin.
+
+![Log Aktivitas](docs/Sitopsi%20(1).png)
+
+---
+
+### 2. Landing Page SITOPSI
+Halaman awal dengan logo, judul "Sistem Informasi Topik Skripsi Berbasis Sistem Pakar", tombol Login & Register.
+
+![Landing Page](docs/Sitopsi%20(2).png)
+
+---
+
+### 3. Login ke Akun
+Form login (Username, Password) + link "Lupa Password?".
+
+![Login](docs/Sitopsi%20(3).png)
+
+---
+
+### 4. Reset Password
+Form ganti password (Username, Password Baru, Konfirmasi Password Baru).
+
+![Reset Password](docs/Sitopsi%20(4).png)
+
+---
+
+### 5. Daftar Akun Baru
+Form registrasi (Nama Lengkap, No. Telepon, Email, Username, Password, Jenis Kelamin).
+
+![Registrasi](docs/Sitopsi%20(5).png)
+
+---
+
+### 6. Dashboard Mahasiswa
+Halaman utama setelah login, menu: Tes Minat Bakat, Lihat Hasil Tes, Generate Topik, Ubah Password, Profile Saya.
+
+![Dashboard Mahasiswa](docs/Sitopsi%20(6).png)
+
+---
+
+### 7. Rekomendasi Topik Skripsi
+Daftar 10 rekomendasi topik skripsi hasil generate berdasarkan minat bakat, + tombol Generate Ulang / Print Preview / Export PDF.
+
+![Rekomendasi Topik](docs/Sitopsi%20(7).png)
+
+---
+
+### 8. Hasil Tes Minat Bakat
+Peringkat minat bakat user dengan nilai CF & persentase, plus detail jawaban tiap pertanyaan.
+
+![Hasil Tes Minat Bakat](docs/Sitopsi%20(8).png)
+
+---
+
+### 9. Tes Minat Bakat (Soal)
+Halaman kuesioner, 1 pertanyaan per halaman dari 15 soal, pilihan tingkat keyakinan.
+
+![Tes Minat Bakat](docs/Sitopsi%20(9).png)
+
+---
+
+### 10. Admin Dashboard
+Menu manajemen admin: User Management, Manajemen Pertanyaan, Rules, Rules Combination, Topics Management, Activity Logs.
+
+![Admin Dashboard](docs/Sitopsi%20(10).png)
+
+---
+
+### 11. Manajemen User
+Tabel data semua user (nama, username, email, role, minat bakat, status, tanggal daftar).
+
+![Manajemen User](docs/Sitopsi%20(11).png)
+
+---
+
+### 12. Manajemen Pertanyaan (CF)
+Form kelola pertanyaan tes minat bakat beserta kategori target & nilai CF Pakar.
+
+![Manajemen Pertanyaan](docs/Sitopsi%20(12).png)
+
+---
+
+### 13. Manajemen Kategori (Rules)
+Kelola kategori/bidang minat (kode, nama, deskripsi) seperti Backend, Frontend, UI/UX, dll.
+
+![Manajemen Kategori](docs/Sitopsi%20(13).png)
+
+---
+
+### 14. Manajemen Kombinasi Rules
+Kelola aturan kombinasi 2-3 kategori untuk menghasilkan "role" hasil (misal Product Analyst dari Frontend + Data).
+
+![Manajemen Kombinasi Rules](docs/Sitopsi%20(14).png)
+
+---
+
+### 15. Manajemen Topik Skripsi
+Kelola daftar topik skripsi berdasarkan kategori & target role, status Aktif/Layak.
+
+![Manajemen Topik Skripsi](docs/Sitopsi%20(15).png)
+
+---
+
+## STRUKTUR PROYEK
 
 ```
 SITOPSI/
-├── vb_app/                          # Aplikasi VB.NET (Frontend & Database)
-│   ├── ProjectPBL.sln               # Solution Visual Studio
-│   └── ProjectPBL/                  # Project utama VB.NET
-│       ├── *.vb                     # Form-form aplikasi
-│       ├── *.Designer.vb            # Designer files
-│       ├── *.resx                   # Resource files
-│       ├── modules/                 # Module tambahan
-│       │   └── PythonBridge.vb      # Bridge untuk memanggil Python AI
-│       ├── My Project/              # Project properties
-│       ├── bin/                     # Build output
-│       └── obj/                     # Object files
+├── docs/                              # Screenshots aplikasi (15 gambar)
+│   ├── Sitopsi (1).png  s.d. (15).png
 │
-├── python_experts/                  # Mesin AI Python (Inference Engine)
-│   ├── main.py                      # Entry point CLI (dipanggil VB)
-│   ├── core/                        # Modul inti inference
-│   │   ├── inference.py             # Logika Certainty Factor & Forward Chaining
-│   │   ├── forward_chaining.py      # (Reserved untuk implementasi lanjut)
-│   │   ├── certainty_factor.py      # (Reserved untuk implementasi lanjut)
-│   │   └── utils.py                 # Utility functions
-│   ├── data/                        # Data tambahan (opsional)
-│   │   └── rules.json               # Aturan tambahan (opsional, data utama di DB)
-│   ├── models/                      # Model data (untuk type hints)
-│   │   └── result_model.py          # Struktur data hasil inference
-│   └── README_PROJECT.md            # Dokumentasi Python AI
+├── python_experts/                    # Mesin AI Python (Inference Engine)
+│   ├── main.py                        # Entry point CLI
+│   ├── core/
+│   │   ├── inference.py               # Orchestrator CF & Forward Chaining
+│   │   ├── forward_chaining.py        # Logika Forward Chaining
+│   │   ├── certainty_factor.py        # Kalkulasi Certainty Factor
+│   │   └── utils.py                   # Fungsi bantu
+│   ├── models/
+│   │   └── result_model.py            # Dataclass hasil inference
+│   └── test_input.json                # Sample input untuk testing
 │
-├── dbsitopsi.sql                    # Database MySQL (schema & data)
-├── README.md                        # File ini
-└── README_PROJECT.md                # Dokumentasi untuk skripsi
+├── vb_app/                            # Aplikasi VB.NET (Frontend & Database)
+│   ├── ProjectPBL.sln                 # Solution Visual Studio
+│   └── ProjectPBL/
+│       ├── ProjectPBL.vbproj          # .NET 8.0 Windows Forms
+│       ├── Program.vb                 # Entry point aplikasi
+│       ├── GlobalModule.vb            # Session variabel & koneksi DB
+│       ├── *.vb / *.resx              # Form-form aplikasi
+│       ├── modules/
+│       │   └── PythonBridge.vb        # Jembatan VB ke Python via subprocess
+│       ├── RoundedButton.vb           # Custom control tombol rounded
+│       ├── RoundedPanel.vb            # Custom control panel rounded
+│       └── RoundedTextBox.vb          # Custom control textbox rounded
+│
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-## 🎯 Fitur Utama
+## TEKNOLOGI YANG DIGUNAKAN
 
-### 1. **Aplikasi VB.NET** (`vb_app/`)
-- **LandingPage**: Halaman awal aplikasi
-- **LoginForm**: Autentikasi user (admin & mahasiswa)
-- **RegisterForm**: Registrasi mahasiswa baru
-- **DashboardAdmin**: Panel admin untuk mengelola data
-- **DashboardUser**: Panel mahasiswa
-- **TesMinatBakat**: Form untuk mengerjakan tes (100 pertanyaan)
-- **HasilTesMinatBakat**: Menampilkan hasil tes dan kategori minat
-- **GenerateTopikSkripsi**: Rekomendasi topik skripsi berdasarkan hasil tes
-- **ChangePassword**: Ubah password user
-
-### 2. **Mesin AI Python** (`python_experts/`)
-- **Inference Engine**: Menghitung skor minat menggunakan **Certainty Factor (CF)**
-- **Forward Chaining**: Menggabungkan CF dari jawaban user untuk tiap kategori
-- **JSON CLI**: Menerima input dari VB via stdin/file, mengembalikan hasil JSON
+| Komponen | Teknologi |
+|----------|-----------|
+| Frontend | VB.NET Windows Forms (.NET 8.0) |
+| AI Engine | Python 3.8+ (standard library only) |
+| Database | MySQL 8.0 |
+| Integrasi | Subprocess (stdin/stdout JSON) |
+| PDF Export | Headless Microsoft Edge / Chrome |
+| Metode | Certainty Factor + Forward Chaining |
 
 ---
 
-## 🗄️ Database (`dbsitopsi.sql`)
-
-### Tabel Utama
-
-| Tabel | Deskripsi |
-|-------|-----------|
-| `roles` | Role user (admin, mahasiswa) |
-| `users` | Data pengguna sistem |
-| `categories` | 4 Kategori minat: <br>A = Backend & Software Engineering<br>B = Frontend & Web Design<br>C = UI/UX Design<br>D = Data, Cyber & System Thinking |
-| `topics` | 240+ topik skripsi (60 per kategori) |
-| `questions` | 100 pertanyaan tes minat bakat |
-| `question_options` | Opsi jawaban (A/B/C/D) dengan bobot CF per kategori |
-
-### Bobot Certainty Factor (CF)
-- **Soal 1-30** (Behavioral): CF = **0.6**
-- **Soal 31-60** (Skill): CF = **0.7**
-- **Soal 61-80** (Interest): CF = **0.75**
-- **Soal 81-100** (Passion): CF = **0.8**
-
----
-
-## 🔗 Cara Kerja Integrasi VB ↔ Python
+## ALUR SISTEM
 
 ```
-[VB.NET Form] 
-    ↓ (User menjawab 100 pertanyaan)
-[Collect Answers]
-    ↓ (Build JSON payload)
-{
-  "user_id": 123,
-  "answers": [
-    {"question_id": 1, "option_id": 2, "category_id": 2, "cf_value": 0.6},
-    ...
-  ]
-}
-    ↓ (Call via PythonBridge.vb)
-[Python main.py] ← stdin
-    ↓ (Proses di inference.py)
-[Certainty Factor Calculation]
-    - Gabungkan CF per kategori: CF_combined = CF1 + CF2*(1-CF1)
-    - Tentukan kategori tertinggi
-    ↓
-[Return JSON Result]
-{
-  "recommended_category": {"id": 1, "name": "Backend", "score": 0.87},
-  "category_scores": {...},
-  "topic_recommendations": [...]
-}
-    ↓ (Parse di VB)
-[Display di HasilTesMinatBakat.vb]
-[Show Topics di GenerateTopikSkripsi.vb]
+Mahasiswa
+    │
+    ├── 1. Register / Login
+    │
+    ├── 2. Tes Minat Bakat
+    │       └── Menjawab 15 pertanyaan dengan tingkat keyakinan
+    │
+    ├── 3. Python AI Engine (subprocess)
+    │       ├── Forward Chaining → kumpulkan fakta per kategori
+    │       ├── Certainty Factor → hitung skor tiap kategori
+    │       └── Output → kategori dengan CF tertinggi
+    │
+    ├── 4. Lihat Hasil Tes
+    │       └── Peringkat minat bakat + nilai CF + detail jawaban
+    │
+    └── 5. Generate Topik Skripsi
+            └── 10 rekomendasi topik berdasarkan kategori minat
+
+Admin
+    │
+    └── Dashboard
+            ├── Manajemen User
+            ├── Manajemen Pertanyaan & CF
+            ├── Manajemen Kategori (Rules)
+            ├── Manajemen Kombinasi Rules
+            ├── Manajemen Topik Skripsi
+            └── Log Aktivitas
 ```
 
 ---
 
-## 🚀 Cara Menjalankan
+## ALGORITMA CERTAINTY FACTOR
 
-### Prerequisites
-- **Visual Studio 2022** (atau lebih baru) dengan workload VB.NET
-- **.NET 8.0** (atau sesuai target di `.vbproj`)
-- **Python 3.8+** (pastikan ada di PATH atau gunakan full path)
-- **MySQL Server** (untuk database)
+Certainty Factor (CF) digunakan untuk mengukur tingkat keyakinan minat user terhadap suatu kategori.
 
-### 1. Setup Database
-```bash
-# Buat database dan import schema
-mysql -u root -p < dbsitopsi.sql
+### Rumus Kombinasi CF
+
+```
+CF_combined(CF1, CF2) = CF1 + CF2 × (1 - CF1)
 ```
 
-### 2. Konfigurasi VB.NET
-1. Buka `vb_app/ProjectPBL.sln` di Visual Studio
-2. Update connection string di `App.config` atau di module database
-3. Update path Python di `modules/PythonBridge.vb`:
-   ```vb
-   Private ReadOnly PythonExe As String = "python"  ' atau "C:\Python39\python.exe"
-   Private ReadOnly ScriptPath As String = "c:\Users\lunox\Documents\SITOPSI\python_experts\main.py"
-   ```
+### Tahapan Perhitungan
 
-### 3. Test Python CLI (Opsional)
-```powershell
-# Test manual dari PowerShell
-$json = '{"user_id":1,"answers":[{"question_id":1,"option_id":1,"category_id":1,"cf_value":0.6}]}'
-echo $json | python "c:\Users\lunox\Documents\SITOPSI\python_experts\main.py"
+**Tahap 1 — CF Gejala**
+
+```
+CF_gejala = CF_user × CF_pakar
 ```
 
-### 4. Run Aplikasi VB
-1. Build solution di Visual Studio (Ctrl+Shift+B)
-2. Run (F5)
-3. Login sebagai admin:
-   - Username: `admin`
-   - Password: `Admin@123`
+- `CF_user` = tingkat keyakinan user saat menjawab (0–1)
+- `CF_pakar` = bobot expert untuk pertanyaan tersebut (0.6, 0.7, 0.75, 0.8)
+
+**Tahap 2 — CF Kombinasi**
+
+Semua CF_gejala dalam satu kategori digabung secara berurutan:
+
+```
+CF_baru = CF_lama + CF_gejala × (1 - CF_lama)
+```
+
+**Tahap 3 — Interpretasi**
+
+| Rentang CF | Interpretasi |
+|------------|--------------|
+| 0.9 – 1.0 | Sangat Kuat |
+| 0.7 – 0.9 | Kuat |
+| 0.5 – 0.7 | Sedang |
+| 0.3 – 0.5 | Lemah |
+| 0.0 – 0.3 | Sangat Lemah |
+
+### Bobot CF Pakar per Tingkatan Soal
+
+| Rentang Soal | Tipe | CF Pakar |
+|--------------|------|----------|
+| 1 – 30 | Behavioral | 0.6 |
+| 31 – 60 | Skill | 0.7 |
+| 61 – 80 | Interest | 0.75 |
+| 81 – 100 | Passion | 0.8 |
 
 ---
 
-## 📊 Algoritma Inference
+## INTEGRASI VB.NET DENGAN PYTHON
 
-### Certainty Factor Combination
-Ketika user memilih beberapa opsi yang mengarah ke kategori yang sama, CF digabung menggunakan formula:
+VB.NET memanggil Python AI Engine melalui subprocess dengan protokol JSON via stdin/stdout.
+
+### Diagram Alur
 
 ```
-CF_combined(CF1, CF2) = CF1 + CF2 * (1 - CF1)
+┌──────────────────────┐
+│    VB.NET Form       │
+│ (TesMinatBakat.vb)   │
+│         │            │
+│  Query jawaban user  │
+│  Build JSON payload  │
+│         │            │
+│         ▼            │
+│ PythonBridge.vb      │
+│  (Process.Start)     │
+│         │            │
+│  stdin ──► main.py   │
+│         │            │
+│  main.py ◄── stdout  │
+│         │            │
+│         ▼            │
+│ Parse JSON result    │
+│ Display di UI        │
+└──────────────────────┘
 ```
 
-Contoh:
-- User menjawab 30 soal kategori Backend, masing-masing CF=0.6
-- CF gabungan akan mendekati ~0.99 (sangat kuat)
+### Format Input (VB → Python)
 
-### Penentuan Kategori
-Kategori dengan **CF tertinggi** menjadi rekomendasi utama.
-
----
-
-## 📝 Format JSON Input/Output
-
-### Input (dari VB ke Python)
 ```json
 {
-  "user_id": 123,
+  "user_id": 1,
   "answers": [
     {
       "question_id": 1,
-      "option_id": 2,
-      "category_id": 2,
-      "cf_value": 0.6
+      "category_id": 1,
+      "cf_user": 0.8,
+      "cf_pakar": 0.6
     }
   ]
 }
 ```
 
-### Output (dari Python ke VB)
+### Format Output (Python → VB)
+
 ```json
 {
-  "user_id": 123,
-  "total_questions_answered": 100,
+  "user_id": 1,
+  "total_questions_answered": 15,
   "category_scores": {
     "1": {
       "name": "Backend & Software Engineering",
-      "cf_combined": 0.8523,
-      "answer_count": 35
+      "cf_combined": 0.87,
+      "answer_count": 8
     },
-    "2": {...},
-    "3": {...},
-    "4": {...}
+    "2": {
+      "name": "Frontend & Web Design",
+      "cf_combined": 0.65,
+      "answer_count": 4
+    },
+    "3": { "...": "..." },
+    "4": { "...": "..." }
   },
   "recommended_category": {
     "id": 1,
     "name": "Backend & Software Engineering",
-    "score": 0.8523,
-    "answer_count": 35
+    "score": 0.87,
+    "answer_count": 8
   },
-  "topic_recommendations": [...],
   "interpretation": "Sangat Kuat - Minat Anda sangat sesuai dengan kategori ini",
-  "next_steps": "Pelajari framework seperti Laravel, Node.js/Express..."
+  "next_steps": "Pelajari framework seperti Laravel, Node.js/Express, atau Spring Boot"
 }
 ```
 
 ---
 
-## 🛠️ Troubleshooting
+## CARA MENJALANKAN
 
-### Python tidak ditemukan
+### Prasyarat
+
+- Visual Studio 2022+ dengan workload .NET Desktop
+- .NET 8.0 SDK
+- Python 3.8+
+- MySQL Server
+
+### 1. Setup Database
+
+Buat database `dbsitopsi` dan import struktur tabel beserta data master.
+
+### 2. Konfigurasi Koneksi Database
+
+Sesuaikan connection string di `vb_app/ProjectPBL/GlobalModule.vb`:
+
 ```vb
-' Di PythonBridge.vb, gunakan full path
-Private ReadOnly PythonExe As String = "C:\Python39\python.exe"
+Public Shared ConnString As String = "Server=localhost;Database=dbsitopsi;User ID=root;Password=;Port=3306;"
 ```
 
-### Error JSON parsing
-- Pastikan input JSON valid (gunakan online JSON validator)
-- Cek encoding (harus UTF-8)
+### 3. Konfigurasi Path Python
 
-### Database connection error
-- Pastikan MySQL service running
-- Cek username/password di connection string
-- Pastikan database `dbsitopsi` sudah ter-import
+Sesuaikan path Python executable dan script di `vb_app/ProjectPBL/modules/PythonBridge.vb`:
 
----
+```vb
+Private ReadOnly PythonExe As String = "python"
+Private ReadOnly ScriptPath As String = "C:\path\to\python_experts\main.py"
+```
 
-## 📚 Untuk Skripsi
+### 4. Build & Run
 
-### Metode yang Digunakan
-1. **Forward Chaining**: Mengumpulkan fakta (jawaban user) untuk mencapai kesimpulan (kategori minat)
-2. **Certainty Factor (CF)**: Mengukur tingkat keyakinan setiap jawaban terhadap kategori
-3. **Hybrid Approach**: Kombinasi VB.NET (UI/DB) + Python (AI Engine)
+1. Buka `vb_app/ProjectPBL.sln` di Visual Studio
+2. Build solution (Ctrl+Shift+B)
+3. Run (F5)
 
-### Referensi Implementasi
-- `python_experts/core/inference.py` - Implementasi CF & Forward Chaining
-- `vb_app/ProjectPBL/modules/PythonBridge.vb` - Integrasi VB-Python via subprocess
-- `dbsitopsi.sql` - Knowledge base (rules dalam bentuk pertanyaan & bobot CF)
+### 5. Login
 
----
-
-## 👥 Kontributor
-
-- **Developer**: [Nama Anda]
-- **Pembimbing**: [Nama Dosen]
-- **Institusi**: [Nama Kampus]
+| Role | Username | Password |
+|------|----------|----------|
+| Admin | admin | Admin@123 |
+| Mahasiswa | (registrasi sendiri) | (user-defined) |
 
 ---
 
-## 📄 Lisensi
+## LISENSI
 
-Proyek ini dibuat untuk keperluan skripsi. Silakan gunakan sebagai referensi dengan mencantumkan sumber.
+```
+MIT License
+
+Copyright (c) 2025 SITOPSI
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 ---
 
-## 📞 Kontak
-
-Jika ada pertanyaan atau issue, hubungi melalui:
-- Email: [email anda]
-- GitHub: [repo link jika ada]
-
----
-
-**Status**: ✅ Production Ready
-**Last Updated**: Desember 2025
+**Status:** Production Ready  
+**Tahun:** 2025  
+**Institusi:** Politeknik Negeri Jakarta — Teknik Informatika
